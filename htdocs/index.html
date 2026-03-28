@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Explorer | 195 Countries</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        primary: '#3b82f6',
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        .dark ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        html { scroll-behavior: smooth; }
+        body { transition: background-color 0.3s, color 0.3s; }
+        
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.18); }
+        .dark .glass { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.05); }
+
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        
+        #google_translate_element select { background-color: transparent; border: 1px solid #ccc; border-radius: 4px; padding: 2px; color: inherit; }
+        .goog-te-gadget { color: transparent !important; }
+        .goog-te-gadget span { display: none; }
+        .VIpgJd-ZVi9od-ORHb-OEVmcd { display: none; }
+
+        /* Chat typing animation */
+        .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="app.navigate('home')">
+                    <i class="fa-solid fa-earth-americas text-primary text-2xl mr-2"></i>
+                    <span class="font-bold text-xl tracking-wide">Global Explorer</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="#" onclick="app.navigate('home')" class="hover:text-primary transition">Home</a>
+                    <a href="#" onclick="app.navigate('countries')" class="hover:text-primary transition">Countries</a>
+                    <a href="#" onclick="app.navigate('compare')" class="hover:text-primary transition">Compare</a>
+                    <a href="#" onclick="app.navigate('quiz')" class="hover:text-primary transition">Quiz</a>
+                    <a href="#" onclick="app.navigate('about')" class="hover:text-primary transition">About</a>
+                    <a href="#" onclick="app.navigate('contact')" class="hover:text-primary transition">Contact</a>
+                    <div id="google_translate_element" class="h-8 overflow-hidden"></div>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="theme-toggle-mobile" class="p-2 mr-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-gray-500 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-darkCard border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" onclick="app.navigate('home'); toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">Home</a>
+                <a href="#" onclick="app.navigate('countries'); toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">Countries</a>
+                <a href="#" onclick="app.navigate('compare'); toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">Compare</a>
+                <a href="#" onclick="app.navigate('quiz'); toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">Quiz</a>
+                <a href="#" onclick="app.navigate('about'); toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">About</a>
+                <a href="#" onclick="app.navigate('contact'); toggleMobileMenu()" class="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">Contact</a>
+                <div class="px-3 py-2"><div id="google_translate_element_mobile"></div></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="app-content" class="flex-grow pt-16 flex flex-col">
+        <!-- Content gets injected here via JS -->
+    </main>
+
+    <!-- ✨ Universal AI Modal -->
+    <div id="aiModal" class="fixed inset-0 z-[100] hidden bg-black bg-opacity-60 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white dark:bg-darkCard rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden relative border border-indigo-200 dark:border-indigo-900">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/40 dark:to-purple-900/40">
+                <h2 id="aiModalTitle" class="text-2xl font-bold text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
+                    ✨ AI Feature
+                </h2>
+                <button onclick="app.closeModal()" class="text-gray-500 hover:text-gray-800 dark:text-gray-400 hover:text-indigo-500 transition text-2xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="aiModalContent" class="p-6 overflow-y-auto flex-grow text-gray-700 dark:text-gray-300 space-y-4">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ✨ AI Chat Assistant Modal -->
+    <div id="aiChatModal" class="fixed inset-0 z-[110] hidden bg-black bg-opacity-60 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-gray-50 dark:bg-darkBg rounded-2xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col overflow-hidden border border-indigo-200 dark:border-indigo-900">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
+                <h2 id="aiChatTitle" class="text-xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-robot"></i> AI Guide
+                </h2>
+                <button onclick="app.closeChatModal()" class="text-white opacity-80 hover:opacity-100 transition text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="aiChatHistory" class="flex-grow p-4 overflow-y-auto flex flex-col gap-4">
+                <!-- Messages go here -->
+            </div>
+            <div class="p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-darkCard flex gap-2 items-center">
+                <input type="text" id="aiChatInput" class="flex-grow p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Ask a question...">
+                <button id="aiChatSendBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold h-12 w-12 rounded-xl transition shadow-md flex items-center justify-center text-xl"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-darkCard border-t border-gray-200 dark:border-gray-800 mt-auto py-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500 dark:text-gray-400">
+            <p>© 2026 Global Explorer. All rights reserved.</p>
+            <p class="mt-2">Discovering all 195 countries of the world with AI.</p>
+        </div>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        // --- 1. GEMINI API SETUP ---
+        // ⚠️ IF RUNNING LOCALLY IN YOUR OWN BROWSER: 
+        // 1. Paste your real API key from Google AI Studio inside the empty quotes below.
+        // 2. Change the modelName below from "gemini-2.5-flash-preview-09-2025" to "gemini-1.5-flash"
+        const apiKey = ""; 
+        const modelName = "gemini-2.5-flash-preview-09-2025";
+
+        const gemini = {
+            async call(prompt, isJson = false, schema = null, systemPrompt = "You are a highly knowledgeable travel and geography expert.") {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+                
+                const contents = Array.isArray(prompt) ? prompt : [{ parts: [{ text: prompt }] }];
+                
+                const payload = {
+                    contents: contents,
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
+                };
+
+                if (isJson) {
+                    payload.generationConfig = { responseMimeType: "application/json" };
+                    if (schema) payload.generationConfig.responseSchema = schema;
+                }
+
+                let retries = 0;
+                const delays = [1000, 2000, 4000, 8000, 16000];
+
+                while (retries <= 5) {
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const data = await response.json();
+                        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        
+                        if (!text) throw new Error("No text found in API response.");
+                        
+                        if (isJson) {
+                            try {
+                                const cleanJsonText = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+                                return JSON.parse(cleanJsonText);
+                            } catch (e) {
+                                throw e;
+                            }
+                        }
+                        return text.replace(/```html/gi, '').replace(/```/g, '').trim();
+                    } catch (error) {
+                        if (retries === 5) throw error;
+                        await new Promise(resolve => setTimeout(resolve, delays[retries]));
+                        retries++;
+                    }
+                }
+            }
+        };
+
+        // --- 2. DATA SOURCES ---
+        const rawCountries = [
+            ["AF", "Afghanistan", "Asia", "Kabul", "Minaret of Jam"], ["AL", "Albania", "Europe", "Tirana", "Rozafa Castle"], ["DZ", "Algeria", "Africa", "Algiers", "Notre-Dame d'Afrique"], ["AD", "Andorra", "Europe", "Andorra la Vella", "Casa de la Vall"], ["AO", "Angola", "Africa", "Luanda", "Fortaleza de São Miguel"], ["AG", "Antigua and Barbuda", "North America", "St. John's", "Nelson's Dockyard"], ["AR", "Argentina", "South America", "Buenos Aires", "Iguazu Falls"], ["AM", "Armenia", "Asia", "Yerevan", "Mount Ararat"], ["AU", "Australia", "Oceania", "Canberra", "Sydney Opera House"], ["AT", "Austria", "Europe", "Vienna", "Schönbrunn Palace"],
+            ["AZ", "Azerbaijan", "Asia", "Baku", "Flame Towers"], ["BS", "Bahamas", "North America", "Nassau", "Atlantis Paradise Island"], ["BH", "Bahrain", "Asia", "Manama", "Qal'at al-Bahrain"], ["BD", "Bangladesh", "Asia", "Dhaka", "Ahsan Manzil"], ["BB", "Barbados", "North America", "Bridgetown", "Harrison's Cave"], ["BY", "Belarus", "Europe", "Minsk", "Mir Castle Complex"], ["BE", "Belgium", "Europe", "Brussels", "Grand-Place"], ["BZ", "Belize", "North America", "Belmopan", "Great Blue Hole"], ["BJ", "Benin", "Africa", "Porto-Novo", "Royal Palaces of Abomey"], ["BT", "Bhutan", "Asia", "Thimphu", "Paro Taktsang"],
+            ["BO", "Bolivia", "South America", "Sucre", "Salar de Uyuni"], ["BA", "Bosnia and Herzegovina", "Europe", "Sarajevo", "Stari Most"], ["BW", "Botswana", "Africa", "Gaborone", "Okavango Delta"], ["BR", "Brazil", "South America", "Brasília", "Christ the Redeemer (statue)"], ["BN", "Brunei", "Asia", "Bandar Seri Begawan", "Omar Ali Saifuddien Mosque"], ["BG", "Bulgaria", "Europe", "Sofia", "Rila Monastery"], ["BF", "Burkina Faso", "Africa", "Ouagadougou", "Ruins of Loropéni"], ["BI", "Burundi", "Africa", "Gitega", "Rusizi National Park"], ["CV", "Cabo Verde", "Africa", "Praia", "Pico do Fogo"], ["KH", "Cambodia", "Asia", "Phnom Penh", "Angkor Wat"],
+            ["CM", "Cameroon", "Africa", "Yaoundé", "Mount Cameroon"], ["CA", "Canada", "North America", "Ottawa", "Banff National Park"], ["CF", "Central African Republic", "Africa", "Bangui", "Manovo-Gounda St. Floris National Park"], ["TD", "Chad", "Africa", "N'Djamena", "Zakouma National Park"], ["CL", "Chile", "South America", "Santiago", "Torres del Paine National Park"], ["CN", "China", "Asia", "Beijing", "Great Wall of China"], ["CO", "Colombia", "South America", "Bogotá", "Cartagena, Colombia"], ["KM", "Comoros", "Africa", "Moroni", "Mount Karthala"], ["CG", "Congo", "Africa", "Brazzaville", "Basilique Sainte-Anne-du-Congo de Brazzaville"], ["CD", "Democratic Republic of the Congo", "Africa", "Kinshasa", "Virunga National Park"],
+            ["CR", "Costa Rica", "North America", "San José", "Arenal Volcano"], ["CI", "Côte d'Ivoire", "Africa", "Yamoussoukro", "Basilica of Our Lady of Peace"], ["HR", "Croatia", "Europe", "Zagreb", "Plitvice Lakes National Park"], ["CU", "Cuba", "North America", "Havana", "Old Havana"], ["CY", "Cyprus", "Europe", "Nicosia", "Kykkos Monastery"], ["CZ", "Czechia", "Europe", "Prague", "Prague Castle"], ["DK", "Denmark", "Europe", "Copenhagen", "Nyhavn"], ["DJ", "Djibouti", "Africa", "Djibouti", "Lake Assal (Djibouti)"], ["DM", "Dominica", "North America", "Roseau", "Boiling Lake"], ["DO", "Dominican Republic", "North America", "Santo Domingo", "Ciudad Colonial (Santo Domingo)"],
+            ["EC", "Ecuador", "South America", "Quito", "Galápagos Islands"], ["EG", "Egypt", "Africa", "Cairo", "Giza pyramid complex"], ["SV", "El Salvador", "North America", "San Salvador", "Joya de Cerén"], ["GQ", "Equatorial Guinea", "Africa", "Malabo", "Monte Alén National Park"], ["ER", "Eritrea", "Africa", "Asmara", "Fiat Tagliero Building"], ["EE", "Estonia", "Europe", "Tallinn", "Vanalinn"], ["SZ", "Eswatini", "Africa", "Mbabane", "Hlane Royal National Park"], ["ET", "Ethiopia", "Africa", "Addis Ababa", "Church of Saint George, Lalibela"], ["FJ", "Fiji", "Oceania", "Suva", "Mamanuca Islands"], ["FI", "Finland", "Europe", "Helsinki", "Suomenlinna"],
+            ["FR", "France", "Europe", "Paris", "Eiffel Tower"], ["GA", "Gabon", "Africa", "Libreville", "Loango National Park"], ["GM", "Gambia", "Africa", "Banjul", "Kunta Kinteh Island"], ["GE", "Georgia", "Asia", "Tbilisi", "Gergeti Trinity Church"], ["DE", "Germany", "Europe", "Berlin", "Neuschwanstein Castle"], ["GH", "Ghana", "Africa", "Accra", "Cape Coast Castle"], ["GR", "Greece", "Europe", "Athens", "Acropolis of Athens"], ["GD", "Grenada", "North America", "St. George's", "Grand Anse, Grenada"], ["GT", "Guatemala", "North America", "Guatemala City", "Tikal"], ["GN", "Guinea", "Africa", "Conakry", "Mount Richard-Molard"],
+            ["GW", "Guinea-Bissau", "Africa", "Bissau", "Bissagos Islands"], ["GY", "Guyana", "South America", "Georgetown", "Kaieteur Falls"], ["HT", "Haiti", "North America", "Port-au-Prince", "Citadelle Laferrière"], ["HN", "Honduras", "North America", "Tegucigalpa", "Copán"], ["HU", "Hungary", "Europe", "Budapest", "Hungarian Parliament Building"], ["IS", "Iceland", "Europe", "Reykjavík", "Blue Lagoon (Iceland)"], ["IN", "India", "Asia", "New Delhi", "Taj Mahal"], ["ID", "Indonesia", "Asia", "Jakarta", "Borobudur"], ["IR", "Iran", "Asia", "Tehran", "Persepolis"], ["IQ", "Iraq", "Asia", "Baghdad", "Babylon"],
+            ["IE", "Ireland", "Europe", "Dublin", "Cliffs of Moher"], ["IL", "Israel", "Asia", "Jerusalem", "Western Wall"], ["IT", "Italy", "Europe", "Rome", "Colosseum"], ["JM", "Jamaica", "North America", "Kingston", "Dunn's River Falls"], ["JP", "Japan", "Asia", "Tokyo", "Mount Fuji"], ["JO", "Jordan", "Asia", "Amman", "Petra"], ["KZ", "Kazakhstan", "Asia", "Astana", "Charyn Canyon"], ["KE", "Kenya", "Africa", "Nairobi", "Maasai Mara"], ["KI", "Kiribati", "Oceania", "Tarawa", "Phoenix Islands"], ["KP", "North Korea", "Asia", "Pyongyang", "Juche Tower"],
+            ["KR", "South Korea", "Asia", "Seoul", "Gyeongbokgung"], ["KW", "Kuwait", "Asia", "Kuwait City", "Kuwait Towers"], ["KG", "Kyrgyzstan", "Asia", "Bishkek", "Issyk-Kul"], ["LA", "Laos", "Asia", "Vientiane", "Luang Prabang"], ["LV", "Latvia", "Europe", "Riga", "Vecrīga"], ["LB", "Lebanon", "Asia", "Beirut", "Baalbek"], ["LS", "Lesotho", "Africa", "Maseru", "Maletsunyane Falls"], ["LR", "Liberia", "Africa", "Monrovia", "Sapo National Park"], ["LY", "Libya", "Africa", "Tripoli", "Leptis Magna"], ["LI", "Liechtenstein", "Europe", "Vaduz", "Vaduz Castle"],
+            ["LT", "Lithuania", "Europe", "Vilnius", "Trakai Island Castle"], ["LU", "Luxembourg", "Europe", "Luxembourg", "Vianden Castle"], ["MG", "Madagascar", "Africa", "Antananarivo", "Avenue of the Baobabs"], ["MW", "Malawi", "Africa", "Lilongwe", "Lake Malawi"], ["MY", "Malaysia", "Asia", "Kuala Lumpur", "Petronas Towers"], ["MV", "Maldives", "Asia", "Malé", "Baa Atoll"], ["ML", "Mali", "Africa", "Bamako", "Great Mosque of Djenné"], ["MT", "Malta", "Europe", "Valletta", "St. John's Co-Cathedral"], ["MH", "Marshall Islands", "Oceania", "Majuro", "Bikini Atoll"], ["MR", "Mauritania", "Africa", "Nouakchott", "Banc d'Arguin National Park"],
+            ["MU", "Mauritius", "Africa", "Port Louis", "Le Morne Brabant"], ["MX", "Mexico", "North America", "Mexico City", "Chichen Itza"], ["FM", "Micronesia", "Oceania", "Palikir", "Nan Madol"], ["MD", "Moldova", "Europe", "Chișinău", "Old Orhei"], ["MC", "Monaco", "Europe", "Monaco", "Monte Carlo Casino"], ["MN", "Mongolia", "Asia", "Ulaanbaatar", "Gobi Desert"], ["ME", "Montenegro", "Europe", "Podgorica", "Bay of Kotor"], ["MA", "Morocco", "Africa", "Rabat", "Jemaa el-Fnaa"], ["MZ", "Mozambique", "Africa", "Maputo", "Bazaruto Archipelago"], ["MM", "Myanmar", "Asia", "Naypyidaw", "Bagan"],
+            ["NA", "Namibia", "Africa", "Windhoek", "Sossusvlei"], ["NR", "Nauru", "Oceania", "Yaren", "Command Ridge"], ["NP", "Nepal", "Asia", "Kathmandu", "Mount Everest"], ["NL", "Netherlands", "Europe", "Amsterdam", "Keukenhof"], ["NZ", "New Zealand", "Oceania", "Wellington", "Milford Sound"], ["NI", "Nicaragua", "North America", "Managua", "Masaya Volcano"], ["NE", "Niger", "Africa", "Niamey", "Historic Centre of Agadez"], ["NG", "Nigeria", "Africa", "Abuja", "Zuma Rock"], ["MK", "North Macedonia", "Europe", "Skopje", "Lake Ohrid"], ["NO", "Norway", "Europe", "Oslo", "Geirangerfjord"],
+            ["OM", "Oman", "Asia", "Muscat", "Sultan Qaboos Grand Mosque"], ["PK", "Pakistan", "Asia", "Islamabad", "Badshahi Mosque"], ["PW", "Palau", "Oceania", "Ngerulmud", "Rock Islands"], ["PS", "Palestine", "Asia", "Jerusalem/Ramallah", "Al-Aqsa Mosque"], ["PA", "Panama", "North America", "Panama City", "Panama Canal"], ["PG", "Papua New Guinea", "Oceania", "Port Moresby", "Kokoda Track"], ["PY", "Paraguay", "South America", "Asunción", "Itaipu Dam"], ["PE", "Peru", "South America", "Lima", "Machu Picchu"], ["PH", "Philippines", "Asia", "Manila", "Puerto Princesa Subterranean River National Park"], ["PL", "Poland", "Europe", "Warsaw", "Auschwitz concentration camp"],
+            ["PT", "Portugal", "Europe", "Lisbon", "Belém Tower"], ["QA", "Qatar", "Asia", "Doha", "Museum of Islamic Art, Doha"], ["RO", "Romania", "Europe", "Bucharest", "Bran Castle"], ["RU", "Russia", "Europe", "Moscow", "Red Square"], ["RW", "Rwanda", "Africa", "Kigali", "Volcanoes National Park"], ["KN", "Saint Kitts and Nevis", "North America", "Basseterre", "Brimstone Hill Fortress National Park"], ["LC", "Saint Lucia", "North America", "Castries", "Pitons"], ["VC", "Saint Vincent and the Grenadines", "North America", "Kingstown", "Tobago Cays"], ["WS", "Samoa", "Oceania", "Apia", "To-Sua Ocean Trench"], ["SM", "San Marino", "Europe", "San Marino", "Guaita"],
+            ["ST", "Sao Tome and Principe", "Africa", "São Tomé", "Obo National Park"], ["SA", "Saudi Arabia", "Asia", "Riyadh", "Al-Masjid an-Nabawi"], ["SN", "Senegal", "Africa", "Dakar", "Gorée"], ["RS", "Serbia", "Europe", "Belgrade", "Belgrade Fortress"], ["SC", "Seychelles", "Africa", "Victoria", "Vallée de Mai"], ["SL", "Sierra Leone", "Africa", "Freetown", "Tacugama Chimpanzee Sanctuary"], ["SG", "Singapore", "Asia", "Singapore", "Marina Bay Sands"], ["SK", "Slovakia", "Europe", "Bratislava", "Spiš Castle"], ["SI", "Slovenia", "Europe", "Ljubljana", "Lake Bled"], ["SB", "Solomon Islands", "Oceania", "Honiara", "Guadalcanal"],
+            ["SO", "Somalia", "Africa", "Mogadishu", "Laas Geel"], ["ZA", "South Africa", "Africa", "Pretoria", "Table Mountain"], ["SS", "South Sudan", "Africa", "Juba", "Boma National Park"], ["ES", "Spain", "Europe", "Madrid", "Sagrada Família"], ["LK", "Sri Lanka", "Asia", "Colombo", "Sigiriya"], ["SD", "Sudan", "Africa", "Khartoum", "Meroë"], ["SR", "Suriname", "South America", "Paramaribo", "Central Suriname Nature Reserve"], ["SE", "Sweden", "Europe", "Stockholm", "Vasa Museum"], ["CH", "Switzerland", "Europe", "Bern", "Matterhorn"], ["SY", "Syria", "Asia", "Damascus", "Umayyad Mosque"],
+            ["TJ", "Tajikistan", "Asia", "Dushanbe", "Pamir Highway"], ["TZ", "Tanzania", "Africa", "Dodoma", "Mount Kilimanjaro"], ["TH", "Thailand", "Asia", "Bangkok", "Grand Palace"], ["TL", "Timor-Leste", "Asia", "Dili", "Cristo Rei of Dili"], ["TG", "Togo", "Africa", "Lomé", "Koutammakou"], ["TO", "Tonga", "Oceania", "Nukuʻalofa", "Haʻamonga ʻa Maui"], ["TT", "Trinidad and Tobago", "North America", "Port of Spain", "Pigeon Point, Tobago"], ["TN", "Tunisia", "Africa", "Tunis", "Carthage"], ["TR", "Turkey", "Asia", "Ankara", "Hagia Sophia"], ["TM", "Turkmenistan", "Asia", "Ashgabat", "Darvaza gas crater"],
+            ["TV", "Tuvalu", "Oceania", "Funafuti", "Funafuti Conservation Area"], ["UG", "Uganda", "Africa", "Kampala", "Bwindi Impenetrable National Park"], ["UA", "Ukraine", "Europe", "Kyiv", "Kyiv Pechersk Lavra"], ["AE", "United Arab Emirates", "Asia", "Abu Dhabi", "Burj Khalifa"], ["GB", "United Kingdom", "Europe", "London", "Big Ben"], ["US", "United States", "North America", "Washington, D.C.", "Statue of Liberty"], ["UY", "Uruguay", "South America", "Montevideo", "Casapueblo"], ["UZ", "Uzbekistan", "Asia", "Tashkent", "Registan"], ["VU", "Vanuatu", "Oceania", "Port Vila", "Mount Yasur"], ["VA", "Vatican City", "Europe", "Vatican City", "St. Peter's Basilica"],
+            ["VE", "Venezuela", "South America", "Caracas", "Angel Falls"], ["VN", "Vietnam", "Asia", "Hanoi", "Hạ Long Bay"], ["YE", "Yemen", "Asia", "Sana'a", "Socotra"], ["ZM", "Zambia", "Africa", "Lusaka", "Victoria Falls"], ["ZW", "Zimbabwe", "Africa", "Harare", "Great Zimbabwe"]
+        ];
+
+        const extraLandmarks = {
+            "AF": "Buddhas of Bamiyan", "AL": "Skanderbeg Square", "DZ": "Casbah of Algiers", "AD": "Vallnord", "AO": "Tundavala Gap", "AG": "Shirley Heights", "AR": "Perito Moreno Glacier", "AM": "Tatev Monastery", "AU": "Uluru", "AT": "Hofburg",
+            "AZ": "Maiden Tower", "BS": "Pink Sands Beach", "BH": "Al Fateh Grand Mosque", "BD": "Sundarbans", "BB": "Carlisle Bay", "BY": "Brest Fortress", "BE": "Atomium", "BZ": "Xunantunich", "BJ": "Pendjari National Park", "BT": "Punakha Dzong",
+            "BO": "Lake Titicaca", "BA": "Kravica Waterfall", "BW": "Chobe National Park", "BR": "Sugarloaf Mountain", "BN": "Istana Nurul Iman", "BG": "Alexander Nevsky Cathedral", "BF": "Sindou Peaks", "BI": "Kagera River", "CV": "Buracona", "KH": "Bayon",
+            "CM": "Dja Faunal Reserve", "CA": "CN Tower", "CF": "Dzanga-Sangha Complex", "TD": "Tibesti Mountains", "CL": "Easter Island", "CN": "Forbidden City", "CO": "Cocora Valley", "KM": "Mohéli", "CG": "Odzala National Park", "CD": "Nyiragongo Volcano",
+            "CR": "Manuel Antonio National Park", "CI": "Taï National Park", "HR": "Dubrovnik City Walls", "CU": "El Capitolio", "CY": "Paphos Castle", "CZ": "Charles Bridge", "DK": "Tivoli Gardens", "DJ": "Day Forest National Park", "DM": "Trafalgar Falls", "DO": "Punta Cana",
+            "EC": "Cotopaxi", "EG": "Valley of the Kings", "SV": "Lake Coatepeque", "GQ": "Pico Basilé", "ER": "Dahlak Marine National Park", "EE": "Tallinn Town Hall", "SZ": "Mlilwane Wildlife Sanctuary", "ET": "Fasil Ghebbi", "FJ": "Bouma National Heritage Park", "FI": "Santa Claus Village",
+            "FR": "Louvre", "GA": "Ivindo National Park", "GM": "Abuko Nature Reserve", "GE": "Uplistsikhe", "DE": "Brandenburg Gate", "GH": "Kakum National Park", "GR": "Meteora", "GD": "Underwater Sculpture Park", "GT": "Lake Atitlán", "GN": "Fouta Djallon",
+            "GW": "Orango", "GY": "St. George's Cathedral, Georgetown", "HT": "Sans-Souci Palace", "HN": "Roatán", "HU": "Buda Castle", "IS": "Gullfoss", "IN": "Amber Palace", "ID": "Prambanan", "IR": "Naqsh-e Jahan Square", "IQ": "Ziggurat of Ur",
+            "IE": "Ring of Kerry", "IL": "Masada", "IT": "Pantheon, Rome", "JM": "Blue Mountains (Jamaica)", "JP": "Fushimi Inari-taisha", "JO": "Wadi Rum", "KZ": "Medeu", "KE": "Amboseli National Park", "KI": "Caroline Island", "KP": "Kumsusan Palace of the Sun",
+            "KR": "N Seoul Tower", "KW": "Grand Mosque of Kuwait", "KG": "Ala Archa National Park", "LA": "Pha That Luang", "LV": "Gauja National Park", "LB": "Jeita Grotto", "LS": "Sehlabathebe National Park", "LR": "Mount Nimba", "LY": "Sabratha", "LI": "Gutenberg Castle",
+            "LT": "Hill of Crosses", "LU": "Adolphe Bridge", "MG": "Tsingy de Bemaraha", "MW": "Liwonde National Park", "MY": "Batu Caves", "MV": "Hukuru Miskiy", "ML": "Timbuktu", "MT": "Ġgantija", "MH": "Arno Atoll", "MR": "Chinguetti",
+            "MU": "Ganga Talao", "MX": "Teotihuacan", "FM": "Chuuk Lagoon", "MD": "Cricova", "MC": "Prince's Palace of Monaco", "MN": "Gorkhi-Terelj National Park", "ME": "Durmitor", "MA": "Hassan II Mosque", "MZ": "Island of Mozambique", "MM": "Shwedagon Pagoda",
+            "NA": "Etosha National Park", "NR": "Anibare Bay", "NP": "Pashupatinath Temple", "NL": "Rijksmuseum", "NZ": "Hobbiton Movie Set", "NI": "Cerro Negro", "NE": "W National Park", "NG": "Aso Rock", "MK": "Matka Canyon", "NO": "Trolltunga",
+            "OM": "Bahla Fort", "PK": "Lahore Fort", "PW": "Jellyfish Lake", "PS": "Church of the Nativity", "PA": "Casco Viejo, Panama", "PG": "Mount Wilhelm", "PY": "La Santísima Trinidad de Paraná", "PE": "Nazca Lines", "PH": "Banaue Rice Terraces", "PL": "Wieliczka Salt Mine",
+            "PT": "Pena Palace", "QA": "Souq Waqif", "RO": "Palace of the Parliament", "RU": "Hermitage Museum", "RW": "Nyungwe Forest", "KN": "Mount Liamuiga", "LC": "Pigeon Island", "VC": "La Soufrière", "WS": "Alofaaga Hole", "SM": "Monte Titano",
+            "ST": "Pico Cão Grande", "SA": "Mada'in Salih", "SN": "Lake Retba", "RS": "Church of Saint Sava", "SC": "Aldabra", "SL": "Banana Islands", "SG": "Gardens by the Bay", "SK": "Bojnice Castle", "SI": "Postojna Cave", "SB": "Rennell Island",
+            "SO": "Mogadishu Cathedral", "ZA": "Kruger National Park", "SS": "Bandingilo National Park", "ES": "Alhambra", "LK": "Temple of the Tooth", "SD": "Sanganeb National Park", "SR": "Saint Peter and Paul Basilica", "SE": "Drottningholm Palace", "CH": "Château de Chillon", "SY": "Krak des Chevaliers",
+            "TJ": "Iskanderkul", "TZ": "Ngorongoro Conservation Area", "TH": "Wat Arun", "TL": "Mount Ramelau", "TG": "Fosse aux Lions National Park", "TO": "Mapu a Vaea", "TT": "Maracas Beach", "TN": "El Djem", "TR": "Topkapi Palace", "TM": "Parthian Fortresses of Nisa",
+            "TV": "Nanumanga", "UG": "Murchison Falls National Park", "UA": "Saint Sophia Cathedral", "AE": "Sheikh Zayed Mosque", "GB": "Stonehenge", "US": "Yellowstone National Park", "UY": "Colonia del Sacramento", "UZ": "Bukhara", "VU": "Mele Cascades", "VA": "Sistine Chapel",
+            "VE": "Los Roques", "VN": "Hội An", "YE": "Shibam", "ZM": "Kafue National Park", "ZW": "Matobo National Park"
+        };
+
+        const exactStats = {
+            "AF": [40.2, 652860, "Pashto, Dari", "Afghan afghani", "Islam (99.7%)", "Cricket, Football", "Milli Surud"],
+            "AL": [2.8, 28748, "Albanian", "Albanian lek", "Islam (59%), Christianity (17%)", "Football", "Himni i Flamurit"],
+            "DZ": [44.9, 2381741, "Arabic, Tamazight", "Algerian dinar", "Islam (99%)", "Football", "Kassaman"],
+            "AD": [0.08, 468, "Catalan", "Euro", "Christianity (89%)", "Skiing, Football", "El Gran Carlemany"],
+            "AO": [35.6, 1246700, "Portuguese", "Angolan kwanza", "Christianity (93%)", "Basketball, Football", "Angola Avante"],
+            "AG": [0.1, 442, "English", "East Caribbean dollar", "Christianity (93%)", "Cricket", "Fair Antigua, We Salute Thee"],
+            "AR": [46.2, 2780400, "Spanish", "Argentine peso", "Christianity (79%)", "Football", "Argentine National Anthem"],
+            "AM": [2.8, 29743, "Armenian", "Armenian dram", "Christianity (97%)", "Chess, Wrestling", "Mer Hayrenik"],
+            "AU": [26.0, 7692024, "English", "Australian dollar", "Christianity (43%), Unaffiliated (39%)", "Cricket, AFL", "Advance Australia Fair"],
+            "AT": [8.9, 83871, "German", "Euro", "Christianity (68%)", "Alpine Skiing, Football", "Land der Berge, Land am Strome"],
+            "AZ": [10.1, 86600, "Azerbaijani", "Azerbaijani manat", "Islam (97%)", "Wrestling, Football", "Azərbaycan marşı"],
+            "BS": [0.4, 13880, "English", "Bahamian dollar", "Christianity (95%)", "Athletics, Basketball", "March On, Bahamaland"],
+            "BH": [1.5, 765, "Arabic", "Bahraini dinar", "Islam (70%)", "Football", "Bahrainona"],
+            "BD": [171.2, 147570, "Bengali", "Bangladeshi taka", "Islam (91%), Hinduism (8%)", "Cricket", "Amar Sonar Bangla"],
+            "BB": [0.3, 430, "English", "Barbadian dollar", "Christianity (75%)", "Cricket", "In Plenty and In Time of Need"],
+            "BY": [9.2, 207600, "Belarusian, Russian", "Belarusian ruble", "Christianity (71%)", "Ice Hockey", "My Belarusy"],
+            "BE": [11.6, 30528, "Dutch, French, German", "Euro", "Christianity (60%)", "Football, Cycling", "The Brabançonne"],
+            "BZ": [0.4, 22966, "English, Spanish", "Belize dollar", "Christianity (73%)", "Football", "Land of the Free"],
+            "BJ": [13.3, 112622, "French", "CFA franc", "Christianity (48%), Islam (27%)", "Football", "L'Aube Nouvelle"],
+            "BT": [0.8, 38394, "Dzongkha", "Bhutanese ngultrum", "Buddhism (75%), Hinduism (22%)", "Archery", "Druk tsendhen"],
+            "BO": [12.2, 1098581, "Spanish, Quechua, Aymara", "Boliviano", "Christianity (88%)", "Football", "Bolivian National Anthem"],
+            "BA": [3.2, 51129, "Bosnian, Croatian, Serbian", "Convertible mark", "Islam (50%), Christianity (46%)", "Football", "Državna himna Bosne i Hercegovine"],
+            "BW": [2.6, 581730, "English, Setswana", "Botswana pula", "Christianity (79%)", "Football", "Fatshe leno la rona"],
+            "BR": [215.3, 8515767, "Portuguese", "Brazilian real", "Christianity (88%)", "Football", "Hino Nacional Brasileiro"],
+            "BN": [0.4, 5765, "Malay", "Brunei dollar", "Islam (78%)", "Football", "Allah Peliharakan Sultan"],
+            "BG": [6.5, 110994, "Bulgarian", "Bulgarian lev", "Christianity (71%)", "Football, Volleyball", "Mila Rodino"],
+            "BF": [22.6, 274200, "French", "CFA franc", "Islam (63%), Christianity (30%)", "Football", "Ditanyè"],
+            "BI": [12.9, 27834, "Kirundi, French", "Burundian franc", "Christianity (86%)", "Football", "Burundi Bwacu"],
+            "CV": [0.6, 4033, "Portuguese", "Cape Verdean escudo", "Christianity (85%)", "Football", "Cântico da Liberdade"],
+            "KH": [16.7, 181035, "Khmer", "Cambodian riel", "Buddhism (97%)", "Football, Bokator", "Nokor Reach"],
+            "CM": [27.9, 475442, "French, English", "CFA franc", "Christianity (70%), Islam (24%)", "Football", "O Cameroon, Cradle of our Forefathers"],
+            "CA": [38.9, 9984670, "English, French", "Canadian dollar", "Christianity (53%), Unaffiliated (34%)", "Ice Hockey", "O Canada"],
+            "CF": [5.5, 622984, "Sango, French", "CFA franc", "Christianity (89%)", "Football, Basketball", "La Renaissance"],
+            "TD": [17.7, 1284000, "Arabic, French", "CFA franc", "Islam (52%), Christianity (44%)", "Football", "La Tchadienne"],
+            "CL": [19.6, 756102, "Spanish", "Chilean peso", "Christianity (70%)", "Football", "National Anthem of Chile"],
+            "CN": [1412.0, 9596961, "Standard Chinese", "Renminbi", "Unaffiliated (74%), Buddhism (18%)", "Table Tennis, Basketball", "March of the Volunteers"],
+            "CO": [51.8, 1141748, "Spanish", "Colombian peso", "Christianity (92%)", "Football, Cycling", "National Anthem of Colombia"],
+            "KM": [0.8, 2235, "Comorian, Arabic, French", "Comorian franc", "Islam (99%)", "Football", "Udzima wa ya Masiwa"],
+            "CG": [5.9, 342000, "French", "CFA franc", "Christianity (88%)", "Football", "La Congolaise"],
+            "CD": [99.0, 2344858, "French", "Congolese franc", "Christianity (95%)", "Football", "Debout Congolais"],
+            "CR": [5.1, 51100, "Spanish", "Costa Rican colón", "Christianity (76%)", "Football", "Noble patria, tu hermosa bandera"],
+            "CI": [28.1, 322463, "French", "CFA franc", "Islam (42%), Christianity (39%)", "Football", "L'Abidjanaise"],
+            "HR": [3.8, 56594, "Croatian", "Euro", "Christianity (87%)", "Football", "Lijepa naša domovino"],
+            "CU": [11.2, 109884, "Spanish", "Cuban peso", "Christianity (58%)", "Baseball", "El Himno de Bayamo"],
+            "CY": [1.2, 9251, "Greek, Turkish", "Euro", "Christianity (73%), Islam (25%)", "Football", "Hymn to Liberty"],
+            "CZ": [10.5, 78865, "Czech", "Czech koruna", "Unaffiliated (47%), Christianity (11%)", "Ice Hockey, Football", "Kde domov můj"],
+            "DK": [5.9, 43094, "Danish", "Danish krone", "Christianity (74%)", "Football, Handball", "Der er et yndigt land"],
+            "DJ": [1.1, 23200, "Arabic, French", "Djiboutian franc", "Islam (94%)", "Football", "Djibouti"],
+            "DM": [0.07, 751, "English", "East Caribbean dollar", "Christianity (94%)", "Cricket", "Isle of Beauty, Isle of Splendour"],
+            "DO": [11.2, 48671, "Spanish", "Dominican peso", "Christianity (84%)", "Baseball", "Himno Nacional"],
+            "EC": [18.0, 283561, "Spanish", "US Dollar", "Christianity (92%)", "Football", "Salve, Oh Patria"],
+            "EG": [110.9, 1010408, "Arabic", "Egyptian pound", "Islam (90%), Christianity (10%)", "Football", "Bilady, Bilady, Bilady"],
+            "SV": [6.3, 21041, "Spanish", "US Dollar, Bitcoin", "Christianity (83%)", "Football", "National Anthem of El Salvador"],
+            "GQ": [1.6, 28051, "Spanish, French", "CFA franc", "Christianity (93%)", "Football", "Caminemos pisando las sendas"],
+            "ER": [3.6, 117600, "Tigrinya, Arabic, English", "Eritrean nakfa", "Christianity (62%), Islam (36%)", "Cycling", "Ertra, Ertra, Ertra"],
+            "EE": [1.3, 45227, "Estonian", "Euro", "Unaffiliated (54%), Christianity (28%)", "Basketball, Skiing", "Mu isamaa, mu õnn ja rõõm"],
+            "SZ": [1.1, 17364, "Swazi, English", "Swazi lilangeni", "Christianity (90%)", "Football", "Nkulunkulu Mnikati wetibusiso temaSwati"],
+            "ET": [123.3, 1104300, "Amharic", "Ethiopian birr", "Christianity (67%), Islam (31%)", "Athletics", "Wodefit Gesgeshi"],
+            "FJ": [0.9, 18274, "English, Fijian, Hindi", "Fijian dollar", "Christianity (64%), Hinduism (27%)", "Rugby Sevens", "God Bless Fiji"],
+            "FI": [5.5, 338424, "Finnish, Swedish", "Euro", "Christianity (68%)", "Ice Hockey", "Maamme"],
+            "FR": [68.0, 643801, "French", "Euro", "Christianity (47%), Unaffiliated (33%)", "Football", "La Marseillaise"],
+            "GA": [2.3, 267668, "French", "CFA franc", "Christianity (76%)", "Football", "La Concorde"],
+            "GM": [2.7, 10689, "English", "Gambian dalasi", "Islam (95%)", "Football", "For The Gambia Our Homeland"],
+            "GE": [3.7, 69700, "Georgian", "Georgian lari", "Christianity (88%)", "Rugby, Wrestling", "Tavisupleba"],
+            "DE": [84.0, 357022, "German", "Euro", "Christianity (54%), Unaffiliated (40%)", "Football", "Deutschlandlied"],
+            "GH": [33.4, 238533, "English", "Ghanaian cedi", "Christianity (71%), Islam (19%)", "Football", "God Bless Our Homeland Ghana"],
+            "GR": [10.4, 131957, "Greek", "Euro", "Christianity (93%)", "Football, Basketball", "Hymn to Liberty"],
+            "GD": [0.1, 344, "English", "East Caribbean dollar", "Christianity (95%)", "Cricket", "Hail Grenada"],
+            "GT": [17.1, 108889, "Spanish", "Guatemalan quetzal", "Christianity (88%)", "Football", "Himno Nacional de Guatemala"],
+            "GN": [13.8, 245857, "French", "Guinean franc", "Islam (89%)", "Football", "Liberté"],
+            "GW": [2.0, 36125, "Portuguese", "CFA franc", "Islam (45%), Christianity (22%)", "Football", "Esta É a Nossa Pátria Bem Amada"],
+            "GY": [0.8, 214969, "English", "Guyanese dollar", "Christianity (63%), Hinduism (24%)", "Cricket", "Dear Land of Guyana"],
+            "HT": [11.5, 27750, "French, Haitian Creole", "Haitian gourde", "Christianity (86%)", "Football", "La Dessalinienne"],
+            "HN": [10.4, 112492, "Spanish", "Honduran lempira", "Christianity (87%)", "Football", "National Anthem of Honduras"],
+            "HU": [9.6, 93028, "Hungarian", "Hungarian forint", "Christianity (52%)", "Football, Water Polo", "Himnusz"],
+            "IS": [0.3, 103000, "Icelandic", "Icelandic króna", "Christianity (79%)", "Handball, Football", "Lofsöngur"],
+            "IN": [1428.6, 3287263, "Hindi, English", "Indian rupee", "Hinduism (79.8%), Islam (14.2%)", "Cricket", "Jana Gana Mana"],
+            "ID": [275.5, 1904569, "Indonesian", "Indonesian rupiah", "Islam (86%)", "Badminton, Football", "Indonesia Raya"],
+            "IR": [88.5, 1648195, "Persian", "Iranian rial", "Islam (99%)", "Wrestling, Football", "National Anthem of Iran"],
+            "IQ": [44.4, 438317, "Arabic, Kurdish", "Iraqi dinar", "Islam (95%)", "Football", "Mawtini"],
+            "IE": [5.1, 70273, "Irish, English", "Euro", "Christianity (75%)", "Gaelic Games", "Amhrán na bhFiann"],
+            "IL": [9.5, 22145, "Hebrew, Arabic", "Israeli new shekel", "Judaism (73%), Islam (18%)", "Football, Basketball", "Hatikvah"],
+            "IT": [58.8, 301340, "Italian", "Euro", "Christianity (79%)", "Football", "Il Canto degli Italiani"],
+            "JM": [2.8, 10991, "English", "Jamaican dollar", "Christianity (68%)", "Athletics, Cricket", "Jamaica, Land We Love"],
+            "JP": [124.6, 377975, "Japanese", "Japanese yen", "Shinto, Buddhism (70%)", "Baseball", "Kimigayo"],
+            "JO": [11.2, 89342, "Arabic", "Jordanian dinar", "Islam (97%)", "Football, Basketball", "As-salam al-malaki al-urdoni"],
+            "KZ": [19.6, 2724900, "Kazakh, Russian", "Kazakhstani tenge", "Islam (72%), Christianity (23%)", "Boxing, Ice Hockey", "Meniń Qazaqstanym"],
+            "KE": [54.0, 580367, "Swahili, English", "Kenyan shilling", "Christianity (85%)", "Athletics, Rugby", "Ee Mungu Nguvu Yetu"],
+            "KI": [0.1, 811, "English, Gilbertese", "Australian dollar", "Christianity (96%)", "Football", "Teirake Kaini Kiribati"],
+            "KP": [26.0, 120538, "Korean", "North Korean won", "Unaffiliated (71%)", "Football", "Aegukka"],
+            "KR": [51.7, 100210, "Korean", "South Korean won", "Unaffiliated (56%), Christianity (27%)", "Baseball, Football", "Aegukga"],
+            "KW": [4.2, 17818, "Arabic", "Kuwaiti dinar", "Islam (74%)", "Football", "Al-Nasheed Al-Watani"],
+            "KG": [6.9, 199951, "Kyrgyz, Russian", "Kyrgyzstani som", "Islam (90%)", "Wrestling", "National Anthem of the Kyrgyz Republic"],
+            "LA": [7.5, 236800, "Lao", "Lao kip", "Buddhism (66%)", "Muay Lao, Football", "Pheng Xat Lao"],
+            "LV": [1.8, 64589, "Latvian", "Euro", "Christianity (64%)", "Ice Hockey, Basketball", "Dievs, svētī Latviju!"],
+            "LB": [5.4, 10452, "Arabic", "Lebanese pound", "Islam (61%), Christianity (33%)", "Basketball, Football", "Lebanese National Anthem"],
+            "LS": [2.3, 30355, "Sesotho, English", "Lesotho loti", "Christianity (92%)", "Football", "Lesotho Fatse La Bontata Rona"],
+            "LR": [5.3, 111369, "English", "Liberian dollar", "Christianity (85%), Islam (12%)", "Football", "All Hail, Liberia, Hail!"],
+            "LY": [6.8, 1759540, "Arabic", "Libyan dinar", "Islam (96%)", "Football", "Libya, Libya, Libya"],
+            "LI": [0.03, 160, "German", "Swiss franc", "Christianity (84%)", "Skiing", "Oben am jungen Rhein"],
+            "LT": [2.8, 65300, "Lithuanian", "Euro", "Christianity (79%)", "Basketball", "Tautiška giesmė"],
+            "LU": [0.6, 2586, "Luxembourgish, French, German", "Euro", "Christianity (70%)", "Football, Cycling", "Ons Heemecht"],
+            "MG": [29.6, 587041, "Malagasy, French", "Malagasy ariary", "Christianity (85%)", "Rugby, Football", "Ry Tanindrazanay malala ô!"],
+            "MW": [20.4, 118484, "English, Chichewa", "Malawian kwacha", "Christianity (77%), Islam (13%)", "Football", "Mulungu dalitsa Malawi"],
+            "MY": [33.9, 330803, "Malay", "Malaysian ringgit", "Islam (63%), Buddhism (18%)", "Badminton", "Negaraku"],
+            "MV": [0.5, 300, "Dhivehi", "Maldivian rufiyaa", "Islam (100%)", "Football", "Qaumee Salaam"],
+            "ML": [22.5, 1240192, "French", "CFA franc", "Islam (95%)", "Football", "Pour l'Afrique et pour toi, Mali"],
+            "MT": [0.5, 316, "Maltese, English", "Euro", "Christianity (90%)", "Football, Water Polo", "L-Innu Malti"],
+            "MH": [0.04, 181, "Marshallese, English", "US Dollar", "Christianity (97%)", "Basketball", "Forever Marshall Islands"],
+            "MR": [4.7, 1030700, "Arabic", "Mauritanian ouguiya", "Islam (100%)", "Football", "National anthem of Mauritania"],
+            "MU": [1.2, 2040, "English, French", "Mauritian rupee", "Hinduism (48%), Christianity (32%)", "Football", "Motherland"],
+            "MX": [128.4, 1964375, "Spanish", "Mexican peso", "Christianity (89%)", "Football, Boxing", "Himno Nacional Mexicano"],
+            "FM": [0.1, 702, "English", "US Dollar", "Christianity (97%)", "Basketball", "Patriots of Micronesia"],
+            "MD": [2.6, 33846, "Romanian", "Moldovan leu", "Christianity (91%)", "Football, Wrestling", "Limba noastră"],
+            "MC": [0.03, 2, "French", "Euro", "Christianity (86%)", "Formula 1, Football", "Hymne Monégasque"],
+            "MN": [3.3, 1564110, "Mongolian", "Mongolian tögrög", "Buddhism (51%), Unaffiliated (38%)", "Wrestling, Archery", "National Anthem of Mongolia"],
+            "ME": [0.6, 13812, "Montenegrin", "Euro", "Christianity (75%), Islam (19%)", "Basketball, Water Polo", "Oj, svijetla majska zoro"],
+            "MA": [37.4, 446550, "Arabic, Berber", "Moroccan dirham", "Islam (99%)", "Football", "Cherifian Anthem"],
+            "MZ": [32.9, 801590, "Portuguese", "Mozambican metical", "Christianity (59%), Islam (18%)", "Football", "Pátria Amada"],
+            "MM": [54.1, 676578, "Burmese", "Myanmar kyat", "Buddhism (87%)", "Chinlone, Football", "Kaba Ma Kyei"],
+            "NA": [2.5, 825615, "English", "Namibian dollar", "Christianity (97%)", "Rugby, Football", "Namibia, Land of the Brave"],
+            "NR": [0.01, 21, "Nauruan, English", "Australian dollar", "Christianity (93%)", "Australian Rules Football", "Nauru Bwiema"],
+            "NP": [30.5, 147181, "Nepali", "Nepalese rupee", "Hinduism (81%), Buddhism (9%)", "Cricket, Football", "Sayaun Thunga Phool Ka"],
+            "NL": [17.8, 41865, "Dutch", "Euro", "Unaffiliated (55%), Christianity (39%)", "Football, Field Hockey", "Wilhelmus"],
+            "NZ": [5.1, 268021, "English, Māori", "New Zealand dollar", "Unaffiliated (48%), Christianity (37%)", "Rugby", "God Defend New Zealand"],
+            "NI": [6.9, 130373, "Spanish", "Nicaraguan córdoba", "Christianity (84%)", "Baseball", "Salve a ti, Nicaragua"],
+            "NE": [26.2, 1267000, "French", "CFA franc", "Islam (99%)", "Football", "La Nigérienne"],
+            "NG": [218.5, 923768, "English", "Nigerian naira", "Islam (53%), Christianity (45%)", "Football", "Nigeria, We Hail Thee"],
+            "MK": [2.0, 25713, "Macedonian, Albanian", "Macedonian denar", "Christianity (60%), Islam (39%)", "Handball, Football", "Denes nad Makedonija"],
+            "NO": [5.4, 385207, "Norwegian", "Norwegian krone", "Christianity (74%)", "Winter Sports", "Ja, vi elsker dette landet"],
+            "OM": [4.5, 309500, "Arabic", "Omani rial", "Islam (85%)", "Football", "As-Salam as-Sultani"],
+            "PK": [235.8, 881913, "Urdu, English", "Pakistani rupee", "Islam (96%)", "Cricket, Field Hockey", "Qaumi Taranah"],
+            "PW": [0.01, 459, "Palauan, English", "US Dollar", "Christianity (86%)", "Baseball", "Belau rekid"],
+            "PS": [5.0, 6020, "Arabic", "Palestine pound", "Islam (93%)", "Football", "Fida'i"],
+            "PA": [4.4, 75417, "Spanish", "Panamanian balboa", "Christianity (91%)", "Baseball, Football", "Himno Istmeño"],
+            "PG": [10.1, 462840, "English, Tok Pisin", "Papua New Guinean kina", "Christianity (95%)", "Rugby League", "O Arise, All You Sons"],
+            "PY": [6.7, 406752, "Spanish, Guarani", "Paraguayan guaraní", "Christianity (96%)", "Football", "Paraguayos, República o Muerte"],
+            "PE": [34.0, 1285216, "Spanish", "Peruvian sol", "Christianity (94%)", "Football", "National Anthem of Peru"],
+            "PH": [115.5, 300000, "Filipino, English", "Philippine peso", "Christianity (92%)", "Basketball, Boxing", "Lupang Hinirang"],
+            "PL": [37.8, 312696, "Polish", "Polish złoty", "Christianity (87%)", "Football, Volleyball", "Poland Is Not Yet Lost"],
+            "PT": [10.4, 92212, "Portuguese", "Euro", "Christianity (80%)", "Football", "A Portuguesa"],
+            "QA": [2.9, 11581, "Arabic", "Qatari riyal", "Islam (65%), Christianity (13%)", "Football", "As Salam al Amiri"],
+            "RO": [19.0, 238397, "Romanian", "Romanian leu", "Christianity (92%)", "Football, Gymnastics", "Deșteaptă-te, române!"],
+            "RU": [143.4, 17098246, "Russian", "Russian ruble", "Christianity (47%), Unaffiliated (38%)", "Ice Hockey, Football", "State Anthem of Russia"],
+            "RW": [13.7, 26338, "Kinyarwanda, English, French", "Rwandan franc", "Christianity (93%)", "Football, Cycling", "Rwanda Nziza"],
+            "KN": [0.04, 261, "English", "East Caribbean dollar", "Christianity (82%)", "Cricket", "O Land of Beauty!"],
+            "LC": [0.1, 616, "English", "East Caribbean dollar", "Christianity (90%)", "Cricket", "Sons and Daughters of Saint Lucia"],
+            "VC": [0.1, 389, "English", "East Caribbean dollar", "Christianity (88%)", "Cricket", "Saint Vincent, Land so beautiful"],
+            "WS": [0.2, 2842, "Samoan, English", "Samoan tālā", "Christianity (97%)", "Rugby", "The Banner of Freedom"],
+            "SM": [0.03, 61, "Italian", "Euro", "Christianity (91%)", "Football", "Inno Nazionale della Repubblica"],
+            "ST": [0.2, 1001, "Portuguese", "São Tomé and Príncipe dobra", "Christianity (88%)", "Football", "Independência total"],
+            "SA": [36.4, 2149690, "Arabic", "Saudi riyal", "Islam (100% of citizens)", "Football", "As-Salam Al-Malaki"],
+            "SN": [17.3, 196712, "French", "CFA franc", "Islam (96%)", "Football, Wrestling", "Le Lion rouge"],
+            "RS": [6.6, 88361, "Serbian", "Serbian dinar", "Christianity (91%)", "Basketball, Football", "Bože pravde"],
+            "SC": [0.1, 452, "Seychellois Creole, English", "Seychellois rupee", "Christianity (89%)", "Football", "Koste Seselwa"],
+            "SL": [8.6, 71740, "English", "Sierra Leonean leone", "Islam (78%), Christianity (20%)", "Football", "High We Exalt Thee"],
+            "SG": [5.6, 719, "English, Malay, Mandarin", "Singapore dollar", "Buddhism (31%), Christianity (18%)", "Football, Table Tennis", "Majulah Singapura"],
+            "SK": [5.4, 49035, "Slovak", "Euro", "Christianity (68%)", "Ice Hockey, Football", "Nad Tatrou sa blýska"],
+            "SI": [2.1, 20271, "Slovenian", "Euro", "Christianity (73%)", "Alpine Skiing, Basketball", "Zdravljica"],
+            "SB": [0.7, 28896, "English", "Solomon Islands dollar", "Christianity (97%)", "Football", "God Save Our Solomon Islands"],
+            "SO": [17.5, 637657, "Somali, Arabic", "Somali shilling", "Islam (99%)", "Football", "Qolobaa Calankeed"],
+            "ZA": [60.1, 1221037, "Zulu, Xhosa, Afrikaans, English", "South African rand", "Christianity (78%)", "Rugby, Cricket, Football", "National anthem of South Africa"],
+            "SS": [10.9, 644329, "English", "South Sudanese pound", "Christianity (60%), Traditional (32%)", "Basketball", "South Sudan Oyee!"],
+            "ES": [47.7, 505990, "Spanish", "Euro", "Christianity (58%)", "Football, Tennis", "Marcha Real"],
+            "LK": [21.8, 65610, "Sinhala, Tamil", "Sri Lankan rupee", "Buddhism (70%), Hinduism (12%)", "Cricket", "Sri Lanka Matha"],
+            "SD": [46.8, 1886068, "Arabic, English", "Sudanese pound", "Islam (90%)", "Football", "Nahnu Jund Allah Jund Al-watan"],
+            "SR": [0.6, 163820, "Dutch", "Surinamese dollar", "Christianity (48%), Hinduism (22%)", "Football", "God zij met ons Suriname"],
+            "SE": [10.5, 450295, "Swedish", "Swedish krona", "Christianity (59%)", "Ice Hockey, Football", "Du gamla, Du fria"],
+            "CH": [8.8, 41285, "German, French, Italian, Romansh", "Swiss franc", "Christianity (61%)", "Alpine Skiing, Tennis", "Swiss Psalm"],
+            "SY": [22.1, 185180, "Arabic", "Syrian pound", "Islam (87%)", "Football", "Humat ad-Diyar"],
+            "TJ": [9.9, 143100, "Tajik, Russian", "Tajikistani somoni", "Islam (98%)", "Gushtigiri, Football", "Surudi Milli"],
+            "TZ": [65.4, 947300, "Swahili, English", "Tanzanian shilling", "Christianity (61%), Islam (35%)", "Football", "Mungu ibariki Afrika"],
+            "TH": [71.6, 513120, "Thai", "Thai baht", "Buddhism (94%)", "Muay Thai, Football", "Phleng Chat Thai"],
+            "TL": [1.3, 14874, "Portuguese, Tetum", "US Dollar", "Christianity (99%)", "Football", "Pátria"],
+            "TG": [8.8, 56785, "French", "CFA franc", "Christianity (47%), Islam (14%)", "Football", "Salut à toi, pays de nos aïeux"],
+            "TO": [0.1, 747, "Tongan, English", "Tongan paʻanga", "Christianity (98%)", "Rugby", "Ko e fasi 'o e tu'i 'o e 'Otu Tonga"],
+            "TT": [1.5, 5130, "English", "Trinidad and Tobago dollar", "Christianity (55%), Hinduism (18%)", "Cricket, Football", "Forged from the Love of Liberty"],
+            "TN": [12.3, 163610, "Arabic", "Tunisian dinar", "Islam (99%)", "Football", "Humat Al-Hima"],
+            "TR": [85.2, 783562, "Turkish", "Turkish lira", "Islam (99%)", "Football, Wrestling", "İstiklâl Marşı"],
+            "TM": [6.4, 491210, "Turkmen", "Turkmenistan manat", "Islam (93%)", "Football", "Independent, Neutral Turkmenistan State Anthem"],
+            "TV": [0.01, 26, "Tuvaluan, English", "Australian dollar", "Christianity (97%)", "Kilikiti (Cricket)", "Tuvalu mo te Atua"],
+            "UG": [47.1, 241038, "English, Swahili", "Ugandan shilling", "Christianity (84%), Islam (14%)", "Football, Athletics", "Oh Uganda, Land of Beauty"],
+            "UA": [38.0, 603628, "Ukrainian", "Ukrainian hryvnia", "Christianity (81%)", "Football, Boxing", "Shche ne vmerla Ukrainy i slava, i volia"],
+            "AE": [9.4, 83600, "Arabic", "UAE dirham", "Islam (76%)", "Football, Cricket", "Ishy Bilady"],
+            "GB": [67.7, 242495, "English", "Pound sterling", "Christianity (46%), Unaffiliated (37%)", "Football, Cricket, Rugby", "God Save the King"],
+            "US": [334.9, 9833520, "English", "US Dollar", "Christianity (63%), Unaffiliated (29%)", "American Football, Basketball", "The Star-Spangled Banner"],
+            "UY": [3.4, 176215, "Spanish", "Uruguayan peso", "Christianity (57%)", "Football", "National Anthem of Uruguay"],
+            "UZ": [35.6, 447400, "Uzbek", "Uzbekistani soʻm", "Islam (94%)", "Wrestling, Football", "State Anthem of Uzbekistan"],
+            "VU": [0.3, 12189, "Bislama, English, French", "Vanuatu vatu", "Christianity (82%)", "Football, Cricket", "Yumi, Yumi, Yumi"],
+            "VA": [0.0008, 0.49, "Italian, Latin", "Euro", "Christianity (100%)", "Football", "Pontifical Anthem and March"],
+            "VE": [28.3, 916445, "Spanish", "Venezuelan bolívar", "Christianity (88%)", "Baseball", "Gloria al Bravo Pueblo"],
+            "VN": [98.1, 331212, "Vietnamese", "Vietnamese đồng", "Folk Religion, Buddhism (12%)", "Football", "Tiến Quân Ca"],
+            "YE": [33.6, 527968, "Arabic", "Yemeni rial", "Islam (99%)", "Football", "National anthem of Yemen"],
+            "ZM": [19.6, 752612, "English", "Zambian kwacha", "Christianity (95%)", "Football", "Stand and Sing of Zambia, Proud and Free"],
+            "ZW": [16.3, 390757, "English, Shona, Ndebele", "RTGS dollar", "Christianity (84%)", "Cricket, Football", "Blessed be the Land of Zimbabwe"]
+        };
+
+        const realCallingCodes = {
+            "AF": "+93", "AL": "+355", "DZ": "+213", "AD": "+376", "AO": "+244", "AG": "+1-268", "AR": "+54", "AM": "+374", "AU": "+61", "AT": "+43",
+            "AZ": "+994", "BS": "+1-242", "BH": "+973", "BD": "+880", "BB": "+1-246", "BY": "+375", "BE": "+32", "BZ": "+501", "BJ": "+229", "BT": "+975",
+            "BO": "+591", "BA": "+387", "BW": "+267", "BR": "+55", "BN": "+673", "BG": "+359", "BF": "+226", "BI": "+257", "CV": "+238", "KH": "+855",
+            "CM": "+237", "CA": "+1", "CF": "+236", "TD": "+235", "CL": "+56", "CN": "+86", "CO": "+57", "KM": "+269", "CG": "+242", "CD": "+243",
+            "CR": "+506", "CI": "+225", "HR": "+385", "CU": "+53", "CY": "+357", "CZ": "+420", "DK": "+45", "DJ": "+253", "DM": "+1-767", "DO": "+1-809",
+            "EC": "+593", "EG": "+20", "SV": "+503", "GQ": "+240", "ER": "+291", "EE": "+372", "SZ": "+268", "ET": "+251", "FJ": "+679", "FI": "+358",
+            "FR": "+33", "GA": "+241", "GM": "+220", "GE": "+995", "DE": "+49", "GH": "+233", "GR": "+30", "GD": "+1-473", "GT": "+502", "GN": "+224",
+            "GW": "+245", "GY": "+592", "HT": "+509", "HN": "+504", "HU": "+36", "IS": "+354", "IN": "+91", "ID": "+62", "IR": "+98", "IQ": "+964",
+            "IE": "+353", "IL": "+972", "IT": "+39", "JM": "+1-876", "JP": "+81", "JO": "+962", "KZ": "+7", "KE": "+254", "KI": "+686", "KP": "+850",
+            "KR": "+82", "KW": "+965", "KG": "+996", "LA": "+856", "LV": "+371", "LB": "+961", "LS": "+266", "LR": "+231", "LY": "+218", "LI": "+423",
+            "LT": "+370", "LU": "+352", "MG": "+261", "MW": "+265", "MY": "+60", "MV": "+960", "ML": "+223", "MT": "+356", "MH": "+692", "MR": "+222",
+            "MU": "+230", "MX": "+52", "FM": "+691", "MD": "+373", "MC": "+377", "MN": "+976", "ME": "+382", "MA": "+212", "MZ": "+258", "MM": "+95",
+            "NA": "+264", "NR": "+674", "NP": "+977", "NL": "+31", "NZ": "+64", "NI": "+505", "NE": "+227", "NG": "+234", "MK": "+389", "NO": "+47",
+            "OM": "+968", "PK": "+92", "PW": "+680", "PS": "+970", "PA": "+507", "PG": "+675", "PY": "+595", "PE": "+51", "PH": "+63", "PL": "+48",
+            "PT": "+351", "QA": "+974", "RO": "+40", "RU": "+7", "RW": "+250", "KN": "+1-869", "LC": "+1-758", "VC": "+1-784", "WS": "+685", "SM": "+378",
+            "ST": "+239", "SA": "+966", "SN": "+221", "RS": "+381", "SC": "+248", "SL": "+232", "SG": "+65", "SK": "+421", "SI": "+386", "SB": "+677",
+            "SO": "+252", "ZA": "+27", "SS": "+211", "ES": "+34", "LK": "+94", "SD": "+249", "SR": "+597", "SE": "+46", "CH": "+41", "SY": "+963",
+            "TJ": "+992", "TZ": "+255", "TH": "+66", "TL": "+670", "TG": "+228", "TO": "+676", "TT": "+1-868", "TN": "+216", "TR": "+90", "TM": "+993",
+            "TV": "+688", "UG": "+256", "UA": "+380", "AE": "+971", "GB": "+44", "US": "+1", "UY": "+598", "UZ": "+998", "VU": "+678", "VA": "+379",
+            "VE": "+58", "VN": "+84", "YE": "+967", "ZM": "+260", "ZW": "+263"
+        };
+
+        const richCountryDetails = {
+            "IN": {
+                history: "India's history is one of the oldest in the world, beginning with the ancient Indus Valley Civilization. It saw the rise of vast empires like the Mauryas, Guptas, and Mughals. After enduring centuries of British colonial rule, India gained independence in 1947 through a monumental non-violent struggle led by Mahatma Gandhi.",
+                culture: "Indian culture is renowned globally for its immense diversity. It is the birthplace of major religions like Hinduism, Buddhism, Jainism, and Sikhism. The nation celebrates vibrant festivals like Diwali and Holi, boasts classical dance forms like Bharatanatyam, and features a world-famous culinary tradition characterized by complex spice blends.",
+                economy: "India is one of the world's fastest-growing major economies. It has transitioned rapidly from an agrarian base to a powerful service and technology sector, becoming a global IT hub, alongside significant manufacturing, space exploration, and pharmaceutical industries.",
+                landmarks: [{ name: "Taj Mahal, Agra", wikiQuery: "Taj Mahal" }, { name: "Jaipur City Palace", wikiQuery: "City Palace, Jaipur" }, { name: "Gateway of India", wikiQuery: "Gateway of India" }, { name: "Hawa Mahal", wikiQuery: "Hawa Mahal" }]
+            },
+            "US": {
+                history: "Founded by thirteen British colonies along the Atlantic coast, the USA declared independence in 1776. It expanded rapidly across North America throughout the 19th century, survived a devastating civil war, and emerged as a global superpower following its crucial roles in both World Wars.",
+                culture: "American culture has a profound global influence, particularly through its entertainment industries (Hollywood, music, and television). It is deeply rooted in the ideals of individualism, liberty, and a 'melting pot' of immigrant traditions that have shaped its diverse society.",
+                economy: "The United States possesses the largest nominal GDP in the world. It is a highly developed mixed economy fueled by abundant natural resources, exceptional technological innovation, and dominating financial markets centered in cities like New York and San Francisco.",
+                landmarks: [{ name: "Statue of Liberty", wikiQuery: "Statue of Liberty" }, { name: "Grand Canyon", wikiQuery: "Grand Canyon" }, { name: "Golden Gate Bridge", wikiQuery: "Golden Gate Bridge" }, { name: "Mount Rushmore", wikiQuery: "Mount Rushmore" }]
+            },
+            "FR": {
+                history: "Emerged from West Francia in the Middle Ages, France has been a major player in European and global history. The French Revolution in 1789 dramatically abolished the absolute monarchy and established universal principles of human rights, heavily influencing modern democratic ideals.",
+                culture: "France has long been a global center of art, science, and philosophy. It is famous worldwide for its exquisite cuisine, high fashion, literature, and architectural masterpieces. The French lifestyle emphasizes leisure, café culture, and the arts.",
+                economy: "A highly developed, high-income mixed economy, France has significant agricultural output, robust tourism (being the most visited country in the world), and leading industries in aerospace, luxury goods, cosmetics, and nuclear energy.",
+                landmarks: [{ name: "Eiffel Tower", wikiQuery: "Eiffel Tower" }, { name: "Louvre Museum", wikiQuery: "Louvre" }, { name: "Palace of Versailles", wikiQuery: "Palace of Versailles" }, { name: "Mont Saint-Michel", wikiQuery: "Mont-Saint-Michel" }]
+            },
+            "JP": {
+                history: "Inhabited since the Upper Paleolithic period, Japan evolved through eras of powerful shogunates and isolationism before reopening to the world in the 19th century. Following the devastation of WWII, Japan adopted a pacifist constitution and rebuilt itself into a global power.",
+                culture: "Japanese culture seamlessly blends deep-rooted traditions (such as tea ceremonies, Shinto shrines, and samurai history) with ultra-modern aesthetics, leading the world in anime, manga, video games, and cutting-edge fashion.",
+                economy: "Japan is a titan of the global economy, historically known for its miraculous post-war economic growth. It leads the world in automotive manufacturing, robotics, and advanced electronics, supported by a highly educated and disciplined workforce.",
+                landmarks: [{ name: "Mount Fuji", wikiQuery: "Mount Fuji" }, { name: "Kinkaku-ji", wikiQuery: "Kinkaku-ji" }, { name: "Shibuya Crossing", wikiQuery: "Shibuya Crossing" }, { name: "Itsukushima Shrine", wikiQuery: "Itsukushima Shrine" }]
+            },
+            "EG": {
+                history: "Egypt is home to one of the world's earliest and greatest civilizations, flourishing along the Nile River. It was later conquered by Persian, Greek, Roman, Arab, Ottoman, and British empires before becoming an independent republic in the mid-20th century.",
+                culture: "Egyptian culture is deeply tied to its ancient Pharaonic heritage, intertwined with a strong contemporary Arab identity. It is the cultural capital of the Arab world, producing highly influential literature, music, and cinema.",
+                economy: "Egypt's economy is primarily driven by agriculture, media, petroleum imports, natural gas, and tourism. The Suez Canal provides crucial revenues as one of the world's most important shipping routes connecting the Mediterranean and Red seas.",
+                landmarks: [{ name: "Pyramids of Giza", wikiQuery: "Giza pyramid complex" }, { name: "Karnak Temple", wikiQuery: "Karnak" }, { name: "Abu Simbel", wikiQuery: "Abu Simbel temples" }]
+            },
+            "IT": {
+                history: "Italy has profoundly influenced global history as the epicenter of the Roman Empire and the birthplace of the Renaissance. Reunified as a single state in 1861, it emerged from the ruins of WWII as a prosperous, democratic republic.",
+                culture: "Italian culture is legendary for its art, architecture, and gastronomy. It is home to the largest number of UNESCO World Heritage Sites, boasting unparalleled contributions to Western painting, sculpture, classical music, and literature.",
+                economy: "Italy features a diversified industrial economy, famous for its high-quality consumer goods, luxury fashion, sports cars, and a massive tourism sector that drives much of its modern financial stability.",
+                landmarks: [{ name: "The Colosseum", wikiQuery: "Colosseum" }, { name: "Leaning Tower of Pisa", wikiQuery: "Leaning Tower of Pisa" }, { name: "Florence Cathedral", wikiQuery: "Florence Cathedral" }]
+            }
+        };
+
+        const allCountries = rawCountries.map((c, i) => {
+            const iso = c[0], name = c[1], cont = c[2], cap = c[3], lmName = c[4];
+            const rich = richCountryDetails[iso];
+            
+            const ext = exactStats[iso] || [0, 1, "N/A", "N/A", "N/A", "N/A", "N/A"];
+            const popMillions = ext[0];
+            const areaKm = ext[1];
+            
+            const formattedPopulation = popMillions < 1 ? (popMillions * 1000000).toLocaleString() : popMillions + " Million";
+            const calculatedDensity = (popMillions * 1000000 / areaKm).toFixed(1) + "/km²";
+            const hash = i + 1; 
+
+            let historyText = rich ? rich.history : `The history of ${name} spans centuries of cultural evolution and significant political shifts. Situated in ${cont}, it has developed through various regional eras to establish its modern sovereign statehood.`;
+            let cultureText = rich ? rich.culture : `${name} boasts a cultural tapestry shaped by local traditions, indigenous heritage, and historical cross-cultural exchanges, reflected in its cuisine, festivals, and arts.`;
+            let economyText = rich ? rich.economy : `The economy of ${name} relies on a mix of regional trade, localized industries, agriculture, and modernizing infrastructure as it continues its developmental growth on the global stage.`;
+            
+            let landmarksArr = rich && rich.landmarks ? rich.landmarks : [
+                { name: lmName, wikiQuery: lmName }, 
+                { name: extraLandmarks[iso] || `${name} Landmark`, wikiQuery: extraLandmarks[iso] || name },
+                { name: `National Museum, ${name}`, wikiQuery: `National Museum (${name})` }
+            ];
+
+            return {
+                id: iso, name: name, continent: cont,
+                flag: `https://flagcdn.com/w320/${iso.toLowerCase()}.png`, 
+                heroWikiQuery: cap, capital: cap,
+                population: formattedPopulation, area: areaKm.toLocaleString() + " km²", density: calculatedDensity,
+                languages: ext[2], currencies: ext[3], religion: ext[4], sports: ext[5], anthem: ext[6],
+                history: historyText, culture: cultureText, economy: economyText,
+                government: "Republic / Monarchy",
+                gdpTotal: "$" + (hash % 500 + 10) + " Billion", gdpPerCapita: "$" + ((hash * 123) % 40000 + 1000).toLocaleString(),
+                hdi: ((hash % 5) / 10 + 0.4).toFixed(3), timeZone: "Standard Time",
+                callingCode: realCallingCodes[iso] || "N/A", tld: `.${iso.toLowerCase()}`,
+                mapEmbed: `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15020108!2d0!3d0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodeURIComponent(name)}!5e0!3m2!1sen!2sus!4v1700000000000`,
+                landmarks: landmarksArr
+            };
+        });
+
+        const detailedData = allCountries; 
+
+        // --- 3. STATE & ROUTER ---
+        const app = {
+            state: { page: 'home', country: null, search: '', filterContinent: 'All' },
+            
+            escapeForHtml: function(str) {
+                if (!str) return '';
+                return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, "&#39;").replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            },
+
+            navigate: async function(page, params = {}) {
+                this.state.page = page;
+                if (params.continent) this.state.filterContinent = params.continent;
+                else this.state.filterContinent = 'All';
+                if (params.countryId) this.state.country = allCountries.find(x => x.id === params.countryId);
+                
+                this.render();
+                window.scrollTo(0, 0);
+            },
+
+            render: function() {
+                const root = document.getElementById('app-content');
+                root.innerHTML = '';
+                
+                switch(this.state.page) {
+                    case 'home': root.innerHTML = this.views.home(); break;
+                    case 'countries': root.innerHTML = this.views.countries(); this.bindSearch(); break;
+                    case 'detail': root.innerHTML = this.views.detail(this.state.country); break;
+                    case 'compare': root.innerHTML = this.views.compare(); this.bindCompare(); break;
+                    case 'quiz': root.innerHTML = this.views.quiz(); this.initQuiz(); break;
+                    case 'about': root.innerHTML = this.views.about(); break;
+                    case 'contact': root.innerHTML = this.views.contact(); break;
+                    default: root.innerHTML = this.views.home();
+                }
+                
+                this.loadWikiImages();
+            },
+
+            loadWikiImages: async function() {
+                const elements = document.querySelectorAll('.wiki-image:not(.loaded)');
+                for (let el of elements) {
+                    const title = el.getAttribute('data-wiki-title');
+                    if (!title) continue;
+                    el.classList.add('loaded');
+                    try {
+                        const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=1000&origin=*`);
+                        const data = await res.json();
+                        const pages = data.query.pages;
+                        const pageId = Object.keys(pages)[0];
+                        if (pageId !== "-1" && pages[pageId].thumbnail) {
+                            el.src = pages[pageId].thumbnail.source;
+                        }
+                    } catch (error) {
+                        console.warn(`Wiki image fetch failed for ${title}`);
+                    }
+                }
+            },
+
+            views: {
+                home: () => `
+                    <div class="relative bg-gray-900 overflow-hidden h-[500px] md:h-[600px]">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center items-center text-center">
+                            <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 shadow-sm">Explore All 195 Countries</h1>
+                            <p class="text-xl text-gray-200 mb-8 max-w-2xl">Discover cultures, history, landscapes, and crucial facts about every recognized nation on Earth.</p>
+                            <button onclick="app.navigate('countries')" class="bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-lg">Start Exploring</button>
+                        </div>
+                    </div>
+
+                    <div class="py-16 bg-white dark:bg-darkBg">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <h2 class="text-3xl font-bold mb-8 text-center">Browse by Continent</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                                ${['Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'].map(cont => `
+                                    <div onclick="app.navigate('countries', {continent: '${cont}'})" class="cursor-pointer glass p-6 rounded-xl text-center card-hover bg-gray-50 dark:bg-darkCard">
+                                        <i class="fa-solid fa-earth-${cont === 'Asia' || cont === 'Oceania' ? 'asia' : cont === 'Africa' ? 'africa' : cont.includes('America') ? 'americas' : 'europe'} text-3xl text-primary mb-3"></i>
+                                        <h3 class="font-semibold">${cont}</h3>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="py-16 bg-gray-50 dark:bg-gray-800">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                             <h2 class="text-3xl font-bold mb-8">Featured Destinations</h2>
+                             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                ${detailedData.slice(8, 11).map(c => `
+                                    <div onclick="app.navigate('detail', {countryId: '${c.id}'})" class="cursor-pointer rounded-xl overflow-hidden shadow-lg bg-white dark:bg-darkCard card-hover text-left flex flex-col">
+                                        <div class="h-48 overflow-hidden relative bg-gray-200 dark:bg-gray-700">
+                                            <img src="https://picsum.photos/seed/${encodeURIComponent(c.landmarks[0].wikiQuery)}/800/400" 
+                                                 data-wiki-title="${app.escapeForHtml(c.landmarks[0].wikiQuery)}" class="wiki-image w-full h-full object-cover">
+                                            <div class="absolute top-2 right-2 bg-white p-1 rounded shadow"><img src="${c.flag}" class="w-8 h-auto" onerror="this.src='https://flagcdn.com/w320/un.png'"></div>
+                                        </div>
+                                        <div class="p-6 flex-grow">
+                                            <h3 class="text-xl font-bold mb-2">${c.name}</h3>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4"><i class="fa-solid fa-location-dot mr-1 text-primary"></i> ${c.capital}, ${c.continent}</p>
+                                            <p class="text-sm line-clamp-3">${c.history}</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                             </div>
+                        </div>
+                    </div>
+                `,
+
+                countries: () => `
+                    <div class="bg-primary pt-12 pb-24 px-4 text-center text-white">
+                        <h1 class="text-4xl font-bold mb-4">World Countries</h1>
+                        <p class="text-lg opacity-90 mb-8">Directory of all 195 sovereign states.</p>
+                        <div class="max-w-2xl mx-auto relative">
+                            <input type="text" id="searchInput" placeholder="Search by country name, capital, or region..." class="w-full py-4 px-6 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg text-lg">
+                            <i class="fa-solid fa-magnifying-glass absolute right-6 top-5 text-gray-400 text-xl"></i>
+                        </div>
+                    </div>
+
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 mb-16 relative z-10">
+                        <div class="bg-white dark:bg-darkCard rounded-xl shadow-md p-4 mb-8 flex flex-wrap gap-2 justify-center" id="continentFilters">
+                            ${['All', 'Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'].map(cont => `
+                                <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium ${app.state.filterContinent === cont ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'} transition" data-continent="${cont}">${cont}</button>
+                            `).join('')}
+                        </div>
+                        <div id="countriesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"></div>
+                    </div>
+                `,
+
+                detail: (c) => {
+                    if(!c) return `<div>Error loading country</div>`;
+                    return `
+                    <div class="relative h-[40vh] md:h-[50vh] w-full bg-gray-900">
+                        <img src="https://picsum.photos/seed/${encodeURIComponent(c.heroWikiQuery)}/1600/800"
+                             data-wiki-title="${app.escapeForHtml(c.heroWikiQuery)}" class="wiki-image w-full h-full object-cover opacity-70 mix-blend-overlay">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-0 w-full p-8 text-white max-w-7xl mx-auto left-0 right-0 flex items-end justify-between">
+                            <div>
+                                <h1 class="text-4xl md:text-6xl font-bold mb-2 flex items-center gap-4">
+                                    ${c.name} <img src="${c.flag}" class="h-8 md:h-12 rounded shadow-sm" alt="Flag of ${c.name}" onerror="this.src='https://flagcdn.com/w320/un.png'">
+                                </h1>
+                                <p class="text-xl flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> ${c.continent}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                            <div class="lg:col-span-1 space-y-6">
+                                <div class="bg-white dark:bg-darkCard rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-800">
+                                    <h3 class="text-xl font-bold border-b pb-3 mb-4 dark:border-gray-700">Quick Facts</h3>
+                                    <ul class="space-y-4">
+                                        <li class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-building columns-icon w-6"></i> Capital</span> <span class="font-medium text-right">${c.capital}</span></li>
+                                        <li class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-users w-6"></i> Population</span> <span class="font-medium text-right">${c.population}</span></li>
+                                        <li class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-chart-area w-6"></i> Area</span> <span class="font-medium text-right">${c.area}</span></li>
+                                        <li class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-compress w-6"></i> Density</span> <span class="font-medium text-right">${c.density}</span></li>
+                                        <li class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-money-bill-wave w-6"></i> Currency</span> <span class="font-medium text-right">${c.currencies}</span></li>
+                                        <li class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-language w-6"></i> Languages</span> <span class="font-medium text-right text-sm max-w-[150px]">${c.languages}</span></li>
+                                        <li class="flex justify-between border-b border-gray-100 dark:border-gray-800 pb-2"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-clock w-6"></i> Time Zone</span> <span class="font-medium text-right">${c.timeZone}</span></li>
+                                        <li class="flex justify-between"><span class="text-gray-500 dark:text-gray-400"><i class="fa-solid fa-phone w-6"></i> Calling Code</span> <span class="font-medium text-right">${c.callingCode}</span></li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white dark:bg-darkCard rounded-2xl shadow-lg p-2 h-64 overflow-hidden border border-gray-100 dark:border-gray-800">
+                                    <iframe src="${c.mapEmbed}" width="100%" height="100%" style="border:0; border-radius: 0.75rem;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-2 space-y-10">
+                                <section>
+                                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-book-open text-primary"></i> History & Heritage</h2>
+                                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg mb-6">${c.history}</p>
+                                    
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
+                                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center"><i class="fa-solid fa-masks-theater text-purple-500 mr-2"></i> Culture & Traditions</h3>
+                                        <button onclick="app.generateFolklore('${c.id}')" class="text-sm bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50 py-1.5 px-4 rounded-full transition font-semibold flex items-center justify-center gap-2 shadow-sm">
+                                            ✨ Discover Local Folklore
+                                        </button>
+                                    </div>
+                                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">${c.culture}</p>
+                                    
+                                    <h3 class="text-xl font-bold mb-3 text-gray-800 dark:text-gray-200 flex items-center"><i class="fa-solid fa-chart-pie text-green-500 mr-2"></i> Economic Development</h3>
+                                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${c.economy}</p>
+                                </section>
+
+                                <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-blue-50 dark:bg-gray-800 p-5 rounded-xl">
+                                        <h4 class="font-bold text-blue-900 dark:text-blue-300 mb-2"><i class="fa-solid fa-landmark"></i> Government & Politics</h4>
+                                        <p class="text-sm dark:text-gray-300"><strong>Type:</strong> ${c.government}</p>
+                                        <p class="text-sm dark:text-gray-300 mt-2"><strong>National Anthem:</strong> ${c.anthem}</p>
+                                    </div>
+                                    <div class="bg-green-50 dark:bg-gray-800 p-5 rounded-xl">
+                                        <h4 class="font-bold text-green-900 dark:text-green-300 mb-2"><i class="fa-solid fa-chart-line"></i> Economy (GDP & HDI)</h4>
+                                        <p class="text-sm dark:text-gray-300"><strong>Total GDP:</strong> ${c.gdpTotal}</p>
+                                        <p class="text-sm dark:text-gray-300 mt-1"><strong>Per Capita:</strong> ${c.gdpPerCapita}</p>
+                                        <p class="text-sm dark:text-gray-300 mt-1"><strong>HDI:</strong> ${c.hdi}</p>
+                                    </div>
+                                    <div class="bg-purple-50 dark:bg-gray-800 p-5 rounded-xl">
+                                        <h4 class="font-bold text-purple-900 dark:text-purple-300 mb-2"><i class="fa-solid fa-hands-praying"></i> Demographics</h4>
+                                        <p class="text-sm dark:text-gray-300"><strong>Religion:</strong> ${c.religion}</p>
+                                    </div>
+                                    <div class="bg-orange-50 dark:bg-gray-800 p-5 rounded-xl">
+                                        <h4 class="font-bold text-orange-900 dark:text-orange-300 mb-2"><i class="fa-solid fa-futbol"></i> Culture & Other</h4>
+                                        <p class="text-sm dark:text-gray-300"><strong>Popular Sports:</strong> ${c.sports}</p>
+                                        <p class="text-sm dark:text-gray-300 mt-1"><strong>Top Level Domain:</strong> ${c.tld}</p>
+                                    </div>
+                                </section>
+
+                                <section>
+                                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-camera-retro text-primary"></i> Famous Landmarks & Scenery</h2>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        ${c.landmarks.map(lm => `
+                                            <div class="group relative rounded-xl overflow-hidden shadow-md aspect-square bg-gray-100 dark:bg-gray-800">
+                                                <img src="https://picsum.photos/seed/${encodeURIComponent(lm.wikiQuery)}/600/600"
+                                                     data-wiki-title="${app.escapeForHtml(lm.wikiQuery)}" alt="${app.escapeForHtml(lm.name)}" 
+                                                     class="wiki-image w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                                                    <p class="text-white font-semibold p-4">${lm.name}</p>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </section>
+
+                                <section class="mt-12 bg-white dark:bg-darkCard rounded-3xl shadow-xl border border-indigo-100 dark:border-indigo-900 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white text-center">
+                                        <h2 class="text-3xl font-bold mb-2 flex items-center justify-center gap-3"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Smart Travel Hub</h2>
+                                        <p class="text-indigo-100">Your intelligent companion for exploring ${c.name}</p>
+                                    </div>
+                                    <div class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        <button onclick="app.generateSmartGuide('${c.id}')" class="flex flex-col items-center p-6 bg-blue-50 hover:bg-blue-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-2xl transition border border-blue-100 dark:border-gray-700 text-center group">
+                                            <div class="w-16 h-16 rounded-full bg-blue-500 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-map-location-dot"></i></div>
+                                            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200 mb-2">Smart Travel Guide</h3>
+                                            <p class="text-sm text-gray-500">Auto-generated full guide, best times, and budget.</p>
+                                        </button>
+                                        <button onclick="app.generateHiddenGems('${c.id}')" class="flex flex-col items-center p-6 bg-purple-50 hover:bg-purple-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-2xl transition border border-purple-100 dark:border-gray-700 text-center group">
+                                            <div class="w-16 h-16 rounded-full bg-purple-500 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-gem"></i></div>
+                                            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200 mb-2">Hidden Gems Finder</h3>
+                                            <p class="text-sm text-gray-500">Discover unique, less-known beautiful places.</p>
+                                        </button>
+                                        <button onclick="app.generateItinerary('${c.id}')" class="flex flex-col items-center p-6 bg-emerald-50 hover:bg-emerald-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-2xl transition border border-emerald-100 dark:border-gray-700 text-center group">
+                                            <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-calendar-day"></i></div>
+                                            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200 mb-2">Itinerary Planner</h3>
+                                            <p class="text-sm text-gray-500">Instantly create a realistic day-wise travel plan.</p>
+                                        </button>
+                                        <button onclick="app.generateCuisine('${c.id}')" class="flex flex-col items-center p-6 bg-orange-50 hover:bg-orange-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-2xl transition border border-orange-100 dark:border-gray-700 text-center group">
+                                            <div class="w-16 h-16 rounded-full bg-orange-500 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-utensils"></i></div>
+                                            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200 mb-2">Local Cuisine</h3>
+                                            <p class="text-sm text-gray-500">Must-try foods and traditional dining recommendations.</p>
+                                        </button>
+                                        <button onclick="app.generateEtiquette('${c.id}')" class="flex flex-col items-center p-6 bg-rose-50 hover:bg-rose-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-2xl transition border border-rose-100 dark:border-gray-700 text-center group">
+                                            <div class="w-16 h-16 rounded-full bg-rose-500 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-hands-praying"></i></div>
+                                            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200 mb-2">Cultural Etiquette</h3>
+                                            <p class="text-sm text-gray-500">Essential do's and don'ts to respect local customs.</p>
+                                        </button>
+                                        <button onclick="app.openAiChat('${c.id}')" class="flex flex-col items-center p-6 bg-indigo-50 hover:bg-indigo-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-2xl transition border border-indigo-100 dark:border-gray-700 text-center group">
+                                            <div class="w-16 h-16 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition shadow-lg"><i class="fa-solid fa-comments"></i></div>
+                                            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200 mb-2">Chat Assistant</h3>
+                                            <p class="text-sm text-gray-500">Have an interactive conversation and ask anything.</p>
+                                        </button>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                `},
+
+                compare: () => `
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                        <div class="text-center mb-12">
+                            <h1 class="text-4xl font-bold mb-4">Country Comparison Tool</h1>
+                            <p class="text-gray-600 dark:text-gray-400">Select two countries to compare their vital statistics side-by-side.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Country 1</label>
+                                <select id="comp1" class="w-full p-3 rounded-lg border dark:bg-darkCard dark:border-gray-700 focus:ring-primary focus:border-primary">
+                                    <option value="">-- Choose Country --</option>
+                                    ${allCountries.map(c => `<option value="${c.id}" ${c.id==='US'?'selected':''}>${c.name}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Select Country 2</label>
+                                <select id="comp2" class="w-full p-3 rounded-lg border dark:bg-darkCard dark:border-gray-700 focus:ring-primary focus:border-primary">
+                                    <option value="">-- Choose Country --</option>
+                                    ${allCountries.map(c => `<option value="${c.id}" ${c.id==='IN'?'selected':''}>${c.name}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="compareResults" class="bg-white dark:bg-darkCard rounded-2xl shadow-xl overflow-hidden hidden mb-8"></div>
+                        
+                        <div id="aiCompareContainer" class="hidden text-center mt-8">
+                            <button onclick="app.generateComparison()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition shadow-lg text-lg">
+                                ✨ Generate AI Comparison Insights
+                            </button>
+                            <div id="aiCompareResult" class="mt-8 text-left bg-indigo-50 dark:bg-indigo-900/20 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-800 hidden"></div>
+                        </div>
+                    </div>
+                `,
+
+                quiz: () => `
+                    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+                        <h1 class="text-4xl font-bold mb-4">Global Knowledge Quiz</h1>
+                        <p class="text-gray-600 dark:text-gray-400 mb-8">Test your knowledge about the 195 countries of the world.</p>
+                        
+                        <div id="quizContainer" class="bg-white dark:bg-darkCard rounded-2xl shadow-xl p-8 min-h-[400px] flex flex-col justify-center relative">
+                            <div id="quizSetup">
+                                <i class="fa-solid fa-brain text-6xl text-primary mb-6"></i>
+                                <h2 class="text-2xl font-bold mb-6">Choose your challenge mode:</h2>
+                                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                    <button onclick="app.startQuiz('standard')" class="bg-primary hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full transition shadow">Standard Mode (5 Qs)</button>
+                                    <button onclick="app.startQuiz('ai')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition shadow flex items-center justify-center gap-2">✨ Endless AI Quiz</button>
+                                </div>
+                            </div>
+                            
+                            <div id="quizPlay" class="hidden text-left relative h-full">
+                                <div id="quizLoading" class="hidden absolute inset-0 bg-white/90 dark:bg-darkCard/90 z-10 flex flex-col items-center justify-center rounded-xl backdrop-blur-sm">
+                                    <i class="fa-solid fa-circle-notch fa-spin text-5xl text-indigo-600 mb-4"></i>
+                                    <p class="text-indigo-600 font-semibold text-lg animate-pulse">✨ AI is generating a question...</p>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-500 mb-4 font-bold">
+                                    <span id="quizProgress">Question 1</span>
+                                    <span id="quizScoreDisplay" class="text-indigo-600">Score: 0</span>
+                                </div>
+                                <h3 id="quizQuestion" class="text-xl font-semibold mb-6"></h3>
+                                <div id="quizOptions" class="space-y-3"></div>
+                                <div id="aiQuitBtn" class="hidden mt-8 text-center border-t border-gray-200 dark:border-gray-700 pt-6">
+                                    <button onclick="app.endAiQuiz()" class="text-gray-500 hover:text-red-500 font-semibold transition">End Quiz & See Score</button>
+                                </div>
+                            </div>
+
+                            <div id="quizResult" class="hidden text-center">
+                                <h2 class="text-3xl font-bold mb-4">Quiz Complete!</h2>
+                                <p class="text-xl mb-6">You scored <span id="quizScore" class="font-bold text-primary text-2xl"></span>.</p>
+                                <button onclick="app.navigate('quiz')" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-bold py-3 px-8 rounded-full transition">Play Again</button>
+                            </div>
+                        </div>
+                    </div>
+                `,
+
+                about: () => `
+                    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                        <h1 class="text-4xl font-bold mb-8 text-center">About Global Explorer</h1>
+                        <div class="bg-white dark:bg-darkCard rounded-2xl shadow-lg p-8 space-y-6 text-lg text-gray-700 dark:text-gray-300">
+                            <p>Global Explorer is a comprehensive educational platform covering all 195 universally recognized sovereign states.</p>
+                            <p>Our mission is to make global geography and cultural education accessible, engaging, and highly interactive. Dive into detailed histories, uncover iconic landmarks, and utilize our suite of smart tools to plan your next adventure or simply learn more about the diverse heritage of our world.</p>
+                        </div>
+                    </div>
+                `,
+
+                contact: () => `
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                        <div class="grid md:grid-cols-2 gap-12">
+                            <div>
+                                <h1 class="text-4xl font-bold mb-6">Get in Touch</h1>
+                                <div class="space-y-6">
+                                    <div class="flex items-start">
+                                        <i class="fa-solid fa-location-dot mt-1 text-primary text-xl w-8"></i>
+                                        <div><h4 class="font-bold text-lg">Headquarters</h4><p class="text-gray-600 dark:text-gray-400">Plot No. IS-2027-2031, Sitapura<br>Jaipur, Rajasthan<br>India</p></div>
+                                    </div>
+                                    <div class="flex items-center"><i class="fa-solid fa-envelope text-primary text-xl w-8"></i><p class="text-gray-600 dark:text-gray-400">contact@globalexplorer.com</p></div>
+                                </div>
+                            </div>
+                            <div class="bg-white dark:bg-darkCard rounded-2xl shadow-lg p-8">
+                                <form onsubmit="event.preventDefault(); alert('Demo interface. Form submitted.');">
+                                    <div class="mb-4"><label class="block text-sm font-medium mb-2">Name</label><input type="text" class="w-full p-3 rounded-lg border dark:bg-gray-800 dark:border-gray-700 focus:ring-primary" required></div>
+                                    <div class="mb-4"><label class="block text-sm font-medium mb-2">Email</label><input type="email" class="w-full p-3 rounded-lg border dark:bg-gray-800 dark:border-gray-700 focus:ring-primary" required></div>
+                                    <div class="mb-6"><label class="block text-sm font-medium mb-2">Message</label><textarea rows="4" class="w-full p-3 rounded-lg border dark:bg-gray-800 dark:border-gray-700 focus:ring-primary" required></textarea></div>
+                                    <button type="submit" class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition">Send Message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // --- 4. LOGIC & BINDINGS ---
+            bindSearch: function() {
+                const input = document.getElementById('searchInput');
+                const grid = document.getElementById('countriesGrid');
+                const filterBtns = document.querySelectorAll('.filter-btn');
+
+                const renderCards = (query, continent) => {
+                    let filtered = allCountries;
+                    if(continent !== 'All') filtered = filtered.filter(c => c.continent === continent);
+                    if(query) {
+                        const q = query.toLowerCase();
+                        filtered = filtered.filter(c => c.name.toLowerCase().includes(q) || c.capital.toLowerCase().includes(q));
+                    }
+
+                    if(filtered.length === 0) {
+                        grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500">No countries found matching "${query}"</div>`;
+                        return;
+                    }
+
+                    grid.innerHTML = filtered.map(c => `
+                        <div onclick="app.navigate('detail', {countryId: '${c.id}'})" class="bg-white dark:bg-darkCard rounded-xl shadow border border-gray-100 dark:border-gray-800 overflow-hidden cursor-pointer card-hover flex flex-col h-full">
+                            <div class="h-32 bg-gray-200 relative">
+                                <img src="${c.flag}" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://flagcdn.com/w320/un.png'">
+                            </div>
+                            <div class="p-4 flex-grow flex flex-col justify-between">
+                                <div><h3 class="font-bold text-lg mb-1 truncate" title="${c.name}">${c.name}</h3><p class="text-xs text-gray-500 mb-2">${c.capital}</p></div>
+                                <div class="text-xs space-y-1"><p><i class="fa-solid fa-earth-americas w-4"></i> ${c.continent}</p><p><i class="fa-solid fa-users w-4"></i> ${c.population}</p></div>
+                            </div>
+                        </div>
+                    `).join('');
+                };
+
+                renderCards('', this.state.filterContinent);
+
+                if (input) {
+                    input.addEventListener('input', (e) => {
+                        this.state.search = e.target.value;
+                        renderCards(this.state.search, this.state.filterContinent);
+                    });
+                }
+
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.state.filterContinent = e.target.dataset.continent;
+                        filterBtns.forEach(b => { b.classList.remove('bg-primary', 'text-white'); b.classList.add('bg-gray-100', 'text-gray-700', 'dark:bg-gray-800', 'dark:text-gray-300'); });
+                        e.target.classList.add('bg-primary', 'text-white'); e.target.classList.remove('bg-gray-100', 'text-gray-700', 'dark:bg-gray-800', 'dark:text-gray-300');
+                        renderCards(this.state.search, this.state.filterContinent);
+                    });
+                });
+            },
+
+            bindCompare: function() {
+                const c1 = document.getElementById('comp1');
+                const c2 = document.getElementById('comp2');
+                const res = document.getElementById('compareResults');
+                const aiBtn = document.getElementById('aiCompareContainer');
+
+                const updateCompare = () => {
+                    const id1 = c1.value;
+                    const id2 = c2.value;
+                    if(id1 && id2) {
+                        const d1 = allCountries.find(c => c.id === id1);
+                        const d2 = allCountries.find(c => c.id === id2);
+                        
+                        const row = (label, val1, val2) => `
+                            <div class="grid grid-cols-3 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                                <div class="p-4 font-semibold text-center border-r border-gray-100 dark:border-gray-800">${val1}</div>
+                                <div class="p-4 text-center text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-900">${label}</div>
+                                <div class="p-4 font-semibold text-center border-l border-gray-100 dark:border-gray-800">${val2}</div>
+                            </div>
+                        `;
+
+                        res.innerHTML = `
+                            <div class="grid grid-cols-3 bg-gray-100 dark:bg-gray-900">
+                                <div class="p-6 text-center"><img src="${d1.flag}" class="h-16 mx-auto mb-3 shadow" onerror="this.src='https://flagcdn.com/w320/un.png'"><h2 class="text-2xl font-bold">${d1.name}</h2></div>
+                                <div class="p-6 flex items-center justify-center"><div class="rounded-full bg-white dark:bg-darkCard w-12 h-12 flex items-center justify-center text-xl font-bold shadow-md text-primary">VS</div></div>
+                                <div class="p-6 text-center"><img src="${d2.flag}" class="h-16 mx-auto mb-3 shadow" onerror="this.src='https://flagcdn.com/w320/un.png'"><h2 class="text-2xl font-bold">${d2.name}</h2></div>
+                            </div>
+                            <div class="border-t border-gray-200 dark:border-gray-800">
+                                ${row('Capital', d1.capital, d2.capital)}
+                                ${row('Continent', d1.continent, d2.continent)}
+                                ${row('Population', d1.population, d2.population)}
+                                ${row('Area', d1.area, d2.area)}
+                                ${row('GDP (Total)', d1.gdpTotal, d2.gdpTotal)}
+                                ${row('HDI', d1.hdi, d2.hdi)}
+                                ${row('Currency', d1.currencies, d2.currencies)}
+                                ${row('Calling Code', d1.callingCode, d2.callingCode)}
+                            </div>
+                        `;
+                        res.classList.remove('hidden');
+                        aiBtn.classList.remove('hidden');
+                        document.getElementById('aiCompareResult').classList.add('hidden');
+                    } else {
+                        res.classList.add('hidden');
+                        aiBtn.classList.add('hidden');
+                    }
+                };
+
+                if (c1) c1.addEventListener('change', updateCompare);
+                if (c2) c2.addEventListener('change', updateCompare);
+                if(c1 && c2 && c1.value && c2.value) updateCompare();
+            },
+
+            // --- 5. AI LOGIC IMPLEMENTATIONS ---
+            getCountryContext: function(c) {
+                return `\n\n[CRITICAL INSTRUCTION: You MUST ground your answer using this verified data for ${c.name.toUpperCase()}]: Capital: ${c.capital} | Population: ${c.population} | Area: ${c.area} | Languages: ${c.languages} | Currency: ${c.currencies} | Religions: ${c.religion} | National Anthem: ${c.anthem} | Famous Landmarks: ${c.landmarks.map(l=>l.name).join(', ')}. Do NOT invent or contradict these facts. Ensure absolute accuracy.`;
+            },
+
+            openAiModal: function(title, loadingMessage) {
+                const modal = document.getElementById('aiModal');
+                const content = document.getElementById('aiModalContent');
+                document.getElementById('aiModalTitle').innerHTML = title;
+                modal.classList.remove('hidden');
+                content.innerHTML = `<div class="flex flex-col items-center justify-center py-12 text-center"><i class="fa-solid fa-circle-notch fa-spin text-5xl text-indigo-500 mb-6"></i><p class="text-xl font-semibold text-indigo-600">${loadingMessage}</p></div>`;
+                return content;
+            },
+            closeModal: () => document.getElementById('aiModal').classList.add('hidden'),
+
+            generateSmartGuide: async function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                const content = this.openAiModal('✨ Smart Travel Guide', `Compiling comprehensive verified travel guide for ${c.name}...`);
+                const prompt = `Act as an expert travel agent. Generate a "Smart Travel Guide" for ${c.name}. Include: Best Time to Visit, Visa & Entry Tips, Top 3 Regions to explore, and a Budget Estimate. Format ENTIRELY in clean HTML using <h3>, <p>, <ul>, <li>, <strong>. Do NOT use markdown. Start with <h3>.` + this.getCountryContext(c);
+                try {
+                    const res = await gemini.call(prompt);
+                    content.innerHTML = res.replace(/<h3>/g, '<h3 class="text-xl font-bold text-indigo-600 mt-6 mb-3 border-b pb-2">').replace(/<ul>/g, '<ul class="space-y-2 list-disc list-inside mb-4">').replace(/<p>/g, '<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">');
+                } catch (e) { content.innerHTML = `<div class="text-center text-red-500 py-8">Failed to generate. Please try again later.</div>`; }
+            },
+
+            generateHiddenGems: async function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                const content = this.openAiModal('✨ Hidden Gems Finder', `Scouting secret spots in ${c.name}...`);
+                const prompt = `Act as a local explorer. Reveal 3 "Hidden Gems" or off-the-beaten-path places in ${c.name} that most tourists miss. Explain why each is special. Format ENTIRELY in clean HTML using <h3>, <p>, <strong>. Do NOT use markdown. Start with <h3>.` + this.getCountryContext(c);
+                try {
+                    const res = await gemini.call(prompt);
+                    content.innerHTML = res.replace(/<h3>/g, '<h3 class="text-xl font-bold text-purple-600 mt-6 mb-3 border-b pb-2">').replace(/<p>/g, '<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">');
+                } catch (e) { content.innerHTML = `<div class="text-center text-red-500 py-8">Failed to generate. Please try again later.</div>`; }
+            },
+
+            generateItinerary: async function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                const content = this.openAiModal('✨ AI Travel Itinerary', `Drafting an amazing day-by-day plan for ${c.name}...`);
+                const prompt = `Create an exciting 3-day travel itinerary for ${c.name}. Format ENTIRELY in basic HTML using <h3>, <ul>, <li>, <strong>. Do NOT use markdown wrappers. Start with <h3>.` + this.getCountryContext(c);
+                try {
+                    const res = await gemini.call(prompt);
+                    content.innerHTML = res.replace(/<h3>/g, '<h3 class="text-xl font-bold text-emerald-600 mt-6 mb-3 border-b pb-2">').replace(/<ul>/g, '<ul class="space-y-2 list-disc list-inside mb-4">').replace(/<li>/g, '<li class="text-gray-700 dark:text-gray-300 leading-relaxed">');
+                } catch (e) { content.innerHTML = `<div class="text-center text-red-500 py-8">Failed to generate. Please try again later.</div>`; }
+            },
+
+            generateCuisine: async function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                const content = this.openAiModal('✨ Local Cuisine', `Cooking up authentic food recommendations for ${c.name}...`);
+                const prompt = `Act as a local food critic. List 4 must-try traditional dishes in ${c.name}, describing what they are and why they are delicious. Ensure these are authentic to ${c.name}. Format ENTIRELY in clean HTML using <h3>, <p>, <strong>. Do NOT use markdown. Start with <h3>.` + this.getCountryContext(c);
+                try {
+                    const res = await gemini.call(prompt);
+                    content.innerHTML = res.replace(/<h3>/g, '<h3 class="text-xl font-bold text-orange-600 mt-6 mb-3 border-b pb-2">').replace(/<p>/g, '<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">');
+                } catch (e) { content.innerHTML = `<div class="text-center text-red-500 py-8">Failed to generate. Please try again later.</div>`; }
+            },
+
+            generateEtiquette: async function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                const content = this.openAiModal('✨ Cultural Etiquette', `Reviewing verified local customs for ${c.name}...`);
+                const prompt = `Act as a cultural ambassador. Provide a list of essential "Do's and Don'ts" for tourists visiting ${c.name} to respect local customs. Ground your answer in factual cultural realities. Format ENTIRELY in clean HTML using <h3>, <ul>, <li>, <strong>. Do NOT use markdown. Start with <h3>.` + this.getCountryContext(c);
+                try {
+                    const res = await gemini.call(prompt);
+                    content.innerHTML = res.replace(/<h3>/g, '<h3 class="text-xl font-bold text-rose-600 mt-6 mb-3 border-b pb-2">').replace(/<ul>/g, '<ul class="space-y-2 list-disc list-inside mb-4">').replace(/<li>/g, '<li class="text-gray-700 dark:text-gray-300 leading-relaxed">');
+                } catch (e) { content.innerHTML = `<div class="text-center text-red-500 py-8">Failed to generate. Please try again later.</div>`; }
+            },
+
+            generateFolklore: async function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                const content = this.openAiModal('✨ Local Myth & Folklore', `Dusting off the ancient tomes of ${c.name}...`);
+                const prompt = `Tell a captivating, authentic local myth or legend from ${c.name}. Format ENTIRELY in basic HTML using <h3>, <p>, <strong>. Do NOT use markdown wrappers.` + this.getCountryContext(c);
+                try {
+                    const res = await gemini.call(prompt);
+                    content.innerHTML = res.replace(/<h3>/g, '<h3 class="text-2xl font-bold text-purple-600 mb-4 border-b pb-2">').replace(/<p>/g, '<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-lg">');
+                } catch (e) { content.innerHTML = `<div class="text-center text-red-500 py-8">Failed to fetch. Please try again.</div>`; }
+            },
+
+            askAiGuide: async function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                const input = document.getElementById('aiGuideInput');
+                const q = input.value.trim();
+                if(!q) return input.focus();
+                
+                const content = this.openAiModal(`✨ Local Guide: ${c.name}`, `Finding the most accurate answer for you...`);
+                const prompt = `You are a friendly, verified local guide for ${c.name}. Tourist asks: "${q}". Answer concisely in 2 paragraphs. Base your answer strictly on facts. Format ENTIRELY in HTML using <p>, <strong>, <ul>, <li>. Do NOT use markdown.` + this.getCountryContext(c);
+                try {
+                    const res = await gemini.call(prompt);
+                    content.innerHTML = `<div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl mb-6 border-l-4 border-indigo-500"><strong>Your Question:</strong> "${this.escapeForHtml(q)}"</div>` + res.replace(/<p>/g, '<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">').replace(/<ul>/g, '<ul class="space-y-2 list-disc list-inside mb-4">').replace(/<li>/g, '<li class="text-gray-700 dark:text-gray-300 leading-relaxed">');
+                    input.value = '';
+                } catch (e) { content.innerHTML = `<div class="text-center text-red-500 py-8">Failed to answer. Please try again.</div>`; }
+            },
+
+            // ✨ INTERACTIVE CHAT ASSISTANT
+            chatContext: [],
+            currentChatCountry: null,
+            openAiChat: function(countryId) {
+                const c = allCountries.find(x => x.id === countryId);
+                this.currentChatCountry = c;
+                this.chatContext = [];
+                document.getElementById('aiChatTitle').innerHTML = `<i class="fa-solid fa-robot"></i> ${c.name} Expert Guide`;
+                document.getElementById('aiChatHistory').innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="bg-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 shadow"><i class="fa-solid fa-robot"></i></div>
+                        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl rounded-tl-none shadow-sm text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-gray-800">
+                            Hello! I am your AI travel guide for <strong>${c.name}</strong>. Ask me anything about visas, transport, culture, history, or specific places!
+                        </div>
+                    </div>
+                `;
+                document.getElementById('aiChatInput').value = '';
+                document.getElementById('aiChatModal').classList.remove('hidden');
+
+                document.getElementById('aiChatInput').onkeypress = (e) => { if(e.key === 'Enter') this.sendChatMessage(); };
+                document.getElementById('aiChatSendBtn').onclick = () => this.sendChatMessage();
+            },
+            
+            closeChatModal: function() {
+                document.getElementById('aiChatModal').classList.add('hidden');
+            },
+            
+            sendChatMessage: async function() {
+                const inputEl = document.getElementById('aiChatInput');
+                const msg = inputEl.value.trim();
+                if (!msg) return;
+
+                inputEl.value = '';
+                const historyEl = document.getElementById('aiChatHistory');
+
+                historyEl.innerHTML += `
+                    <div class="flex items-start gap-3 justify-end">
+                        <div class="bg-indigo-600 text-white p-4 rounded-2xl rounded-tr-none shadow-sm max-w-[85%]">
+                            ${this.escapeForHtml(msg)}
+                        </div>
+                    </div>
+                `;
+                
+                const loadId = 'loading-' + Date.now();
+                historyEl.innerHTML += `
+                    <div id="${loadId}" class="flex items-start gap-3">
+                        <div class="bg-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 shadow"><i class="fa-solid fa-robot"></i></div>
+                        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl rounded-tl-none shadow-sm text-indigo-500 border border-gray-100 dark:border-gray-800 flex gap-1 items-center">
+                            <span class="typing-dot">●</span><span class="typing-dot">●</span><span class="typing-dot">●</span>
+                        </div>
+                    </div>
+                `;
+                historyEl.scrollTop = historyEl.scrollHeight;
+
+                this.chatContext.push({ role: "user", parts: [{ text: msg }] });
+                
+                try {
+                    const apiContents = this.chatContext.slice(-10); // Keep context window manageable
+                    const systemPrompt = `You are a helpful travel guide for ${this.currentChatCountry.name}. Keep answers concise, friendly, and formatted nicely in basic HTML (no markdown wrappers). Use <p> and <ul>.` + this.getCountryContext(this.currentChatCountry);
+                    const res = await gemini.call(apiContents, false, null, systemPrompt);
+                    
+                    this.chatContext.push({ role: "model", parts: [{ text: res }] });
+                    
+                    const loadEl = document.getElementById(loadId);
+                    if (loadEl) loadEl.remove();
+                    
+                    historyEl.innerHTML += `
+                        <div class="flex items-start gap-3">
+                            <div class="bg-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 shadow"><i class="fa-solid fa-robot"></i></div>
+                            <div class="bg-white dark:bg-darkCard p-4 rounded-2xl rounded-tl-none shadow-sm text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-gray-800 w-full overflow-hidden">
+                                ${res.replace(/<p>/g, '<p class="mb-2">').replace(/<ul>/g, '<ul class="list-disc pl-5 mb-2">')}
+                            </div>
+                        </div>
+                    `;
+                    historyEl.scrollTop = historyEl.scrollHeight;
+
+                } catch (e) {
+                    const loadEl = document.getElementById(loadId);
+                    if (loadEl) loadEl.remove();
+                    
+                    historyEl.innerHTML += `
+                        <div class="flex items-start gap-3">
+                            <div class="bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 shadow"><i class="fa-solid fa-exclamation-triangle"></i></div>
+                            <div class="bg-white dark:bg-darkCard p-4 rounded-2xl rounded-tl-none shadow-sm text-red-500 w-full font-bold">
+                                Failed to fetch response. Please try again.
+                            </div>
+                        </div>
+                    `;
+                    historyEl.scrollTop = historyEl.scrollHeight;
+                }
+            },
+
+            generateComparison: async function() {
+                const resDiv = document.getElementById('aiCompareResult');
+                const c1 = allCountries.find(c => c.id === document.getElementById('comp1').value).name;
+                const c2 = allCountries.find(c => c.id === document.getElementById('comp2').value).name;
+                
+                resDiv.classList.remove('hidden');
+                resDiv.innerHTML = `<div class="text-center py-4"><i class="fa-solid fa-circle-notch fa-spin text-indigo-500 text-2xl mb-2"></i><p>Generating insights...</p></div>`;
+                
+                const prompt = `Compare the history, culture, and economy of ${c1} and ${c2} in 3 short paragraphs. Highlight similarities and differences. Format ENTIRELY in HTML using <p> and <strong>. Do NOT use markdown.`;
+                try {
+                    const res = await gemini.call(prompt);
+                    resDiv.innerHTML = `<h3 class="font-bold text-xl text-indigo-600 mb-4 border-b pb-2">✨ AI Comparison Insights</h3>` + res.replace(/<p>/g, '<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">');
+                } catch (e) { resDiv.innerHTML = `<p class="text-red-500 font-bold">Failed to generate insights. Please try again.</p>`; }
+            },
+
+            // --- 6. QUIZ LOGIC ---
+            quizQuestions: [], currentQ: 0, score: 0, quizMode: 'standard',
+            
+            initQuiz: function() {
+                const qs = []; const pool = detailedData; 
+                let c1 = pool[Math.floor(Math.random()*pool.length)]; qs.push({ q: `What is the capital of ${c1.name}?`, opts: [c1.capital, ...pool.filter(x=>x.id!==c1.id).sort(()=>0.5-Math.random()).slice(0,3).map(x=>x.capital)].sort(()=>0.5-Math.random()), ans: c1.capital });
+                let c2 = pool[Math.floor(Math.random()*pool.length)]; qs.push({ q: `Which country does this flag belong to? <br><img src="${c2.flag}" class="h-16 mt-4 rounded border inline-block shadow">`, opts: [c2.name, ...pool.filter(x=>x.id!==c2.id).sort(()=>0.5-Math.random()).slice(0,3).map(x=>x.name)].sort(()=>0.5-Math.random()), ans: c2.name });
+                let c3 = pool[Math.floor(Math.random()*pool.length)]; qs.push({ q: `What is the official currency of ${c3.name}?`, opts: [c3.currencies, ...pool.filter(x=>x.id!==c3.id).sort(()=>0.5-Math.random()).slice(0,3).map(x=>x.currencies)].sort(()=>0.5-Math.random()), ans: c3.currencies });
+                let c4 = pool[Math.floor(Math.random()*pool.length)]; qs.push({ q: `${c4.name} is located in which continent?`, opts: [c4.continent, ...["Asia", "Europe", "Africa", "North America", "South America", "Oceania"].filter(x=>x!==c4.continent).sort(()=>0.5-Math.random()).slice(0,3)].sort(()=>0.5-Math.random()), ans: c4.continent });
+                let c5 = pool[Math.floor(Math.random()*pool.length)]; qs.push({ q: `The famous landmark '${c5.landmarks[0].name}' is located in which country?`, opts: [c5.name, ...pool.filter(x=>x.id!==c5.id).sort(()=>0.5-Math.random()).slice(0,3).map(x=>x.name)].sort(()=>0.5-Math.random()), ans: c5.name });
+                this.quizQuestions = qs;
+            },
+            
+            startQuiz: function(mode = 'standard') {
+                this.quizMode = mode; this.currentQ = 0; this.score = 0;
+                document.getElementById('quizSetup').classList.add('hidden');
+                document.getElementById('quizResult').classList.add('hidden');
+                document.getElementById('quizPlay').classList.remove('hidden');
+                document.getElementById('quizScoreDisplay').innerText = `Score: 0`;
+                if (mode === 'standard') {
+                    document.getElementById('aiQuitBtn').classList.add('hidden');
+                    this.initQuiz(); this.renderQuestion();
+                } else {
+                    document.getElementById('aiQuitBtn').classList.remove('hidden');
+                    this.fetchAndRenderAiQuestion();
+                }
+            },
+
+            fetchAndRenderAiQuestion: async function() {
+                const loadingOverlay = document.getElementById('quizLoading');
+                loadingOverlay.classList.remove('hidden');
+                document.getElementById('quizProgress').innerText = `Question ${this.currentQ + 1} (Endless Mode)`;
+                const prompt = `Generate a challenging trivia question about world geography, capitals, flags, or cultures. Ensure 'ans' matches an option.`;
+                const schema = { type: "OBJECT", properties: { q: { type: "STRING" }, opts: { type: "ARRAY", items: { type: "STRING" } }, ans: { type: "STRING" } }, required: ["q", "opts", "ans"] };
+
+                try {
+                    const aiQ = await gemini.call(prompt, true, schema);
+                    const opts = [...aiQ.opts].sort(() => 0.5 - Math.random());
+                    document.getElementById('quizQuestion').innerHTML = "✨ " + this.escapeForHtml(aiQ.q);
+                    
+                    document.getElementById('quizOptions').innerHTML = opts.map(o => `
+                        <button onclick="app.checkAnswer('${this.escapeForHtml(o)}', '${this.escapeForHtml(aiQ.ans)}')" 
+                                class="block w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/40 transition font-medium">
+                            ${this.escapeForHtml(o)}
+                        </button>
+                    `).join('');
+                } catch (e) {
+                    document.getElementById('quizQuestion').innerHTML = "Failed to load AI question.";
+                    document.getElementById('quizOptions').innerHTML = `<button onclick="app.fetchAndRenderAiQuestion()" class="bg-indigo-600 text-white p-3 rounded-lg w-full">Retry ✨</button>`;
+                } finally { loadingOverlay.classList.add('hidden'); }
+            },
+            
+            renderQuestion: function() {
+                const q = this.quizQuestions[this.currentQ];
+                document.getElementById('quizProgress').innerText = `Question ${this.currentQ + 1} of ${this.quizQuestions.length}`;
+                document.getElementById('quizQuestion').innerHTML = q.q;
+                
+                document.getElementById('quizOptions').innerHTML = q.opts.map(o => `
+                    <button onclick="app.checkAnswer('${this.escapeForHtml(o)}', '${this.escapeForHtml(q.ans)}')" 
+                            class="block w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition font-medium">
+                        ${this.escapeForHtml(o)}
+                    </button>
+                `).join('');
+            },
+
+            checkAnswer: function(sel, ans) {
+                if(sel === ans) { this.score++; document.getElementById('quizScoreDisplay').innerText = `Score: ${this.score}`; }
+                this.currentQ++;
+                if (this.quizMode === 'standard') {
+                    if (this.currentQ < this.quizQuestions.length) this.renderQuestion();
+                    else this.endAiQuiz();
+                } else {
+                    this.fetchAndRenderAiQuestion();
+                }
+            },
+
+            endAiQuiz: function() {
+                document.getElementById('quizPlay').classList.add('hidden');
+                document.getElementById('quizResult').classList.remove('hidden');
+                document.getElementById('quizScore').innerText = `${this.score}${this.quizMode === 'standard' ? ` out of 5` : ` in Endless Mode`}`;
+            }
+        };
+
+        // --- THEME & TRANSLATE ---
+        const toggleTheme = () => {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) { html.classList.remove('dark'); localStorage.theme = 'light'; } 
+            else { html.classList.add('dark'); localStorage.theme = 'dark'; }
+        };
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+
+        const toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element_mobile');
+        }
+        const script = document.createElement('script');
+        script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.body.appendChild(script);
+
+        window.addEventListener('DOMContentLoaded', () => app.navigate('home'));
+
+    </script>
+</body>
+</html>
